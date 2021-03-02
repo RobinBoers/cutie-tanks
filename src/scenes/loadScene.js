@@ -15,7 +15,7 @@ export class loadScene extends Phaser.Scene {
     preload() {
 
         this.load.image('title_bg', './assets/backgrounds/menu.png');
-        this.load.image('title_text', './assets/text/title.png');
+        this.load.image('title_text', './assets/text/title2.png');
         // this.load.audio('title_music', 'assets/music/awful.mp3');
 
         this.load.audio('btn_hover', './assets/sounds/click.wav');
