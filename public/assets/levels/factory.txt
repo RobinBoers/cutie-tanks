@@ -1,0 +1,5 @@
+GAMEVARS.platforms.create(50, 200, 'pipe');
+            GAMEVARS.platforms.create(800, 500, 'pipe');
+            GAMEVARS.platforms.create(60, 500, 'pipe');
+            GAMEVARS.platforms.create(800, 600, 'pipe');
+            GAMEVARS.platforms.create(400, 300, 'pipe');

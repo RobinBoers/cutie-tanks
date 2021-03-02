@@ -1,0 +1,4 @@
+GAMEVARS.platforms.create(50, 500, 'ground');
+        GAMEVARS.platforms.create(-50, 150, 'ground').setRotation(10);;
+        GAMEVARS.platforms.create(600, 300, 'ground').setRotation(-85);
+        GAMEVARS.platforms.create(900, 100, 'ground');

@@ -1,0 +1,36 @@
+{
+	"name": "cutie-tanks",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"start": "parcel src/index.html -p 8000",
+		"build": "parcel build src/index.html --out-dir dist",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Robin Boers",
+	"license": "GPLv3",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/robinboers/cutie-tanks"
+	},
+	"homepage": "https://robijntje.itch.io/cutie-tanks",
+	"devDependencies": {
+		"@babel/core": "^7.13.8",
+		"@babel/plugin-proposal-class-properties": "^7.13.0",
+		"babel-eslint": "^10.1.0",
+		"eslint": "^6.8.0",
+		"minimist": ">=1.2.2",
+		"parcel-plugin-clean-easy": "^1.0.2",
+		"parcel-plugin-static-files-copy": "^2.5.1"
+	},
+	"dependencies": {
+		"phaser": "^3.52.0"
+	},
+	"parcelCleanPaths": [
+		"dist"
+	],
+	"staticFiles": {
+		"staticPath": "public",
+		"watcherGlob": "**"
+	}
+}
