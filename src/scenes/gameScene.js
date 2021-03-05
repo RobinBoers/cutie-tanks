@@ -81,7 +81,7 @@ export class gameScene extends Phaser.Scene {
             else if(player.name == 2) color = 0x3E9F49
             else if(player.name == 3) color = 0x9000FF
 
-            this.add.graphics().fillStyle(0x2E2A2C, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4, 20);
+            this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4, 20);
 
             this.add.graphics().fillStyle(color, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4 * (0.1 * GAMEVARS.playerHealth[player.name]), 20);
 
@@ -101,7 +101,7 @@ export class gameScene extends Phaser.Scene {
 
             GAMEVARS.playerHealth[i] = maxHealth; // 10
 
-            var color = 0x2E2A2C;
+            var color = CST.UI.CARDCOLOR;
             var offset = 2;
 
             if(i == 0) color = 0x507ECE
@@ -113,7 +113,7 @@ export class gameScene extends Phaser.Scene {
             this.add.graphics().fillStyle(0x000000, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4) + offset, 10 + offset, this.game.renderer.width / 4, 20);
  
             // Background (empty part)
-            this.add.graphics().fillStyle(0x2E2A2C, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4, 20);
+            this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4, 20);
 
             // Health itself
             this.add.graphics().fillStyle(color, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4 * (0.1 * GAMEVARS.playerHealth[i]), 20);

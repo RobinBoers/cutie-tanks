@@ -19,15 +19,15 @@ export class playerSelectScene extends Phaser.Scene {
 
     create() {
 
-        this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0);
+        this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
 
         let players = [];
         let joinedPlayers = [];
         let placeholders = [];
 
-        this.add.text(150, this.game.renderer.height * 0.1, 'Press down to join and change skin.', { font: '24px Courier', fill: '#000' });
+        this.add.text(150, this.game.renderer.height * 0.1, 'Press down to join and change skin.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
 
-        this.add.text(100, 420, 'Choose a level. Press start when ready.', { font: '24px Courier', fill: '#000' });
+        this.add.text(100, 420, 'Choose a level. Press start when ready.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
 
         this.level = "default";
 
@@ -39,7 +39,7 @@ export class playerSelectScene extends Phaser.Scene {
 
         for (var i = 0; i < 4; i++) {
             let playerBox = this.add.graphics();
-            playerBox.fillStyle(0x2E2A2C, 1.0);
+            playerBox.fillStyle(CST.UI.CARDCOLOR, 1.0);
 
             let boxShadow = this.add.graphics();
             boxShadow.fillStyle(0x000000, 1.0);
@@ -149,7 +149,7 @@ export class playerSelectScene extends Phaser.Scene {
                 this.sound.play('btn_hover');
 
                 let playerBox = this.add.graphics();
-                playerBox.fillStyle(0x2E2A2C, 1.0);
+                playerBox.fillStyle(CST.UI.CARDCOLOR, 1.0);
 
                 let boxShadow = this.add.graphics();
                 boxShadow.fillStyle(0x000000, 1.0);

@@ -50,12 +50,12 @@ export class endScene extends Phaser.Scene {
             }
         }
 
-        this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0);
+        this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
 
         // this.add.text(20, this.game.renderer.height * 0.1, `Player ${this.winner} has won!`, { font: '30px Courier', fill: '#000' });
         
         let playerBox = this.add.graphics();
-        playerBox.fillStyle(0x2E2A2C, 1.0);
+        playerBox.fillStyle(CST.UI.CARDCOLOR, 1.0);
 
         let boxShadow = this.add.graphics();
         boxShadow.fillStyle(0x000000, 1.0);
@@ -77,7 +77,7 @@ export class endScene extends Phaser.Scene {
         playerSpriteBottom.setDepth(4);
         playerSpriteBottom.fillRect(this.game.renderer.width / 2.57 - 20+  41, this.game.renderer.height * 0.2 + 163, 120, 3.2)
 
-        this.add.text(this.game.renderer.width / 2.57, this.game.renderer.height * 0.8, 'Press start', { font: '24px Courier', fill: '#000000' });
+        this.add.text(this.game.renderer.width / 2.57, this.game.renderer.height * 0.8, 'Press start', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
 
         this.sound.pauseOnBlur = false;
         // let titleMusic = this.sound.add('title_music', {

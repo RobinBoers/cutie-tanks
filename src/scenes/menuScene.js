@@ -16,12 +16,12 @@ export class menuScene extends Phaser.Scene {
 
     create() {
 
-        this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0);
+        this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
         this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.2, 'title_text').setDepth(1).setScale(3);
 
         let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.2 + 100, 'play_btn').setDepth(1).setScale(2);
 
-        this.add.text(this.game.renderer.width / 2.57, this.game.renderer.height * 0.8, 'Press start', { font: '24px Courier', fill: '#000' });
+        this.add.text(this.game.renderer.width / 2.57, this.game.renderer.height * 0.8, 'Press start', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
 
         // this.sound.pauseOnBlur = false;
         // let titleMusic = this.sound.add('title_music', {

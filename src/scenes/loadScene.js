@@ -14,8 +14,8 @@ export class loadScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.image('title_bg', './assets/backgrounds/menu.png');
-        this.load.image('title_text', './assets/text/title2.png');
+        this.load.image('title_bg', './assets/backgrounds/menu5.png');
+        this.load.image('title_text', './assets/text/title4.png');
         // this.load.audio('title_music', 'assets/music/awful.mp3');
 
         this.load.audio('btn_hover', './assets/sounds/click.wav');
@@ -57,6 +57,7 @@ export class loadScene extends Phaser.Scene {
             this.load.spritesheet('brow' + i, './assets/sprites/tanks/brow' + i + '.png', { frameWidth: 44, frameHeight: 33 });
             this.load.spritesheet('bot' + i, './assets/sprites/tanks/bot' + i + '.png', { frameWidth: 44, frameHeight: 33 });
             this.load.spritesheet('snow' + i, './assets/sprites/tanks/snow' + i + '.png', { frameWidth: 44, frameHeight: 33 });
+            this.load.spritesheet('knight' + i, './assets/sprites/tanks/knight' + i + '.png', { frameWidth: 44, frameHeight: 33 });
         }
 
         let loadingBar = this.add.graphics({
