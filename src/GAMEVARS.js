@@ -6,6 +6,7 @@ export const GAMEVARS = {
     playerSkins: [],
     platforms: [],
     jumppads: [],
+    belts: [],
     cursors: "",
     bombs: {},
     playerSpeed: 200,

@@ -25,15 +25,24 @@ export class gameScene extends Phaser.Scene {
 
         GAMEVARS.playersGroup = this.physics.add.group();
         GAMEVARS.platforms = this.physics.add.staticGroup();
+        GAMEVARS.belts = this.physics.add.staticGroup();
         GAMEVARS.jumppads = this.physics.add.group();
-        GAMEVARS.bombs = this.physics.add.group({maxSize: 20}); // max 20 bombs at the same time in screen
+        GAMEVARS.bombs = this.physics.add.group({ maxSize: 20 }); // max 20 bombs at the same time in screen
+        
+        // Moving platform animations
+        this.anims.create({
+            key: 'belt_run',
+            frames: this.anims.generateFrameNumbers('belt', { start: 0, end: 1 }),
+            frameRate: 5,
+            repeat: -1
+        });
 
         if (this.level == "factory") {
             this.add.image(400, 350, 'factory_bg').setScale(4);
-            GAMEVARS.platforms.create(50, 200, 'pipe');
+            GAMEVARS.belts.create(50, 200, 'belt').anims.play('belt_run');;
             GAMEVARS.platforms.create(800, 500, 'pipe');
             GAMEVARS.platforms.create(60, 500, 'pipe');
-            GAMEVARS.platforms.create(800, 600, 'pipe');
+            GAMEVARS.belts.create(800, 600, 'belt').anims.play('belt_run');
             GAMEVARS.platforms.create(400, 300, 'pipe');
         } else if (this.level == "city") {
             this.add.image(400, 200, 'city_bg');
@@ -47,6 +56,7 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.platforms.create(-50, 150, 'log'); // .setRotation(10)
             GAMEVARS.platforms.create(600, 300, 'log'); // .setRotation(-85)
             GAMEVARS.platforms.create(900, 100, 'log');
+            GAMEVARS.jumppads.create(170, 400, 'jumppad').setScale(4);
         } else {
             this.add.image(400, 300, 'bg');
             GAMEVARS.platforms.create(600, 400, 'ground');
@@ -68,6 +78,10 @@ export class gameScene extends Phaser.Scene {
             
         }, null, this);
         this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.platforms);
+        this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.belts, (player) => {
+            GAMEVARS.players[player.name].x += GAMEVARS.playerSpeed * .01;
+
+        });
         this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.playersGroup);
         this.physics.add.overlap(GAMEVARS.playersGroup, GAMEVARS.jumppads, (player) => {
 
@@ -272,7 +286,8 @@ export class gameScene extends Phaser.Scene {
             }
 
             if (gamepad.up && GAMEVARS.players[i].body.touching.down) {
-                GAMEVARS.players[i].setVelocityY(-GAMEVARS.jumpSpeed);
+                // GAMEVARS.players[i].setVelocityY(-GAMEVARS.jumpSpeed);
+                GAMEVARS.players[i].body.velocity.y += -GAMEVARS.jumpSpeed;
             }
 
             // Control player using analog stick
@@ -291,7 +306,7 @@ export class gameScene extends Phaser.Scene {
                 // if (-axisH < 0) GAMEVARS.players[i].setFlipX(false);
 
                 // if(axisV < 0 && GAMEVARS.players[i].body.touching.down) GAMEVARS.players[i].setVelocityY(axisV * jumpSpeed);`
-                if(axisV < -0.5 && GAMEVARS.players[i].body.touching.down) GAMEVARS.players[i].setVelocityY(-GAMEVARS.jumpSpeed);
+                if (axisV < -0.5 && GAMEVARS.players[i].body.touching.down) GAMEVARS.players[i].body.velocity.y += -GAMEVARS.jumpSpeed;
             }
 
             // Control player using analog stick
