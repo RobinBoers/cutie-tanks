@@ -44,6 +44,8 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.platforms.create(60, 500, 'pipe');
             GAMEVARS.belts.create(800, 600, 'belt').anims.play('belt_run');
             GAMEVARS.platforms.create(400, 300, 'pipe');
+
+            GAMEVARS.jumppads.create(740, 400, 'jumppad').setScale(4);
         } else if (this.level == "city") {
             this.add.image(400, 200, 'city_bg');
             GAMEVARS.platforms.create(600, 400, 'stone');
