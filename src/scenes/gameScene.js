@@ -21,7 +21,7 @@ export class gameScene extends Phaser.Scene {
         // Speed limit
         var speedLimit = 2000;
         var knockback = 70;
-        var maxHealth = 1;
+        var maxHealth = 10;
 
         GAMEVARS.playersGroup = this.physics.add.group();
         GAMEVARS.platforms = this.physics.add.staticGroup();
@@ -34,6 +34,11 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.platforms.create(60, 500, 'pipe');
             GAMEVARS.platforms.create(800, 600, 'pipe');
             GAMEVARS.platforms.create(400, 300, 'pipe');
+        } else if (this.level == "city") {
+            this.add.image(400, 200, 'city_bg');
+            GAMEVARS.platforms.create(600, 400, 'stone');
+            GAMEVARS.platforms.create(50, 250, 'stone');
+            GAMEVARS.platforms.create(750, 220, 'stone');
         } else if (this.level == "forest") {
             this.add.image(400, 260, 'forest_bg').setScale(3);
             GAMEVARS.platforms.create(50, 500, 'log');
@@ -49,6 +54,8 @@ export class gameScene extends Phaser.Scene {
         
         this.physics.add.overlap(GAMEVARS.platforms, GAMEVARS.bombs, (platform, bomb) => {
 
+            // this.cameras.main.shake(GAMEVARS.shakeDuration, GAMEVARS.shakeAmount);
+
             // Sound
             this.sound.play('explosion');
 
@@ -62,6 +69,8 @@ export class gameScene extends Phaser.Scene {
         this.physics.add.overlap(GAMEVARS.playersGroup, GAMEVARS.bombs, (player, bomb) => {
 
             if (GAMEVARS.deadPlayers[player.name] === true) return;
+
+            this.cameras.main.shake(GAMEVARS.shakeDuration, GAMEVARS.shakeAmount);
 
             // Knockback
             if (bomb.x > player.x) {
@@ -196,7 +205,7 @@ export class gameScene extends Phaser.Scene {
 
             // When player1 presses the back button,
             // end game
-            if (gamepad.buttons[8].value === 1 && i === 0) {
+            if (gamepad.buttons[8].value === 1) { //&& i === 0
                 console.log("Got exit signal from player " + 1 + ".");
 
                 this.sound.play('btn_back');
@@ -211,7 +220,11 @@ export class gameScene extends Phaser.Scene {
                 GAMEVARS.deadPlayers = [];
                 GAMEVARS.deadPlayerCount = [];
 
+
+                this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
+
                 this.scene.start(CST.SCENES.MENU, [false, null]);
+
                 return;
             }
             

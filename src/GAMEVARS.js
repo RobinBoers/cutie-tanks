@@ -11,5 +11,7 @@ export const GAMEVARS = {
     jumpSpeed: 530,
     fireTimer: [0,0,0,0],
     playerHealth: [],
-    deadPlayerCount: 0
+    deadPlayerCount: 0,
+    shakeAmount: .01,
+    shakeDuration: 100
 }

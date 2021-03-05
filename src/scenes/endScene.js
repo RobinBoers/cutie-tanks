@@ -18,6 +18,8 @@ export class endScene extends Phaser.Scene {
 
     create() {
 
+        this.cameras.main.fadeIn(CST.UI.FADEDURATION, 0, 0, 0)
+
         for (var x = 1; x < 5; x++) {
 
             let skins = CST.SKINS;
@@ -92,7 +94,7 @@ export class endScene extends Phaser.Scene {
 
             if (button.index === 9) {
 
-                this.scene.start(CST.SCENES.PLAYERSELECT, "Open player select.");
+                this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
                 // this.sound.play('btn_hover');
 
                 // setTimeout(200, () => {
@@ -101,6 +103,10 @@ export class endScene extends Phaser.Scene {
 
             }
 
+        })
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start(CST.SCENES.PLAYERSELECT, "Open player select.");
         })
 
     }

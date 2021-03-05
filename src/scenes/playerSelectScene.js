@@ -19,6 +19,8 @@ export class playerSelectScene extends Phaser.Scene {
 
     create() {
 
+        this.cameras.main.fadeIn(CST.UI.FADEDURATION, 0, 0, 0)
+
         // this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
 
         this.background = this.add.tileSprite(0, 0, 3200, 600, 'title_bg').setOrigin(0);
@@ -35,9 +37,9 @@ export class playerSelectScene extends Phaser.Scene {
 
         this.add.image(this.game.renderer.width / 2, 420 + 10, 'choose-level').setScale(2);
 
-        this.level = "default";
+        this.level = "city";
 
-        this.add.image(80, 460, 'default_scene_sel').setScale(.15).setOrigin(0,0)
+        this.add.image(80, 460, 'city_scene_sel').setScale(.15).setOrigin(0,0)
         this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0,0)
         this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
         
@@ -223,11 +225,12 @@ export class playerSelectScene extends Phaser.Scene {
 
                 this.sound.play('btn_hover');
 
-                this.add.image(80, 460, 'default_scene_sel').setScale(.15).setOrigin(0, 0)
+                // this.add.image(80, 460, 'default_scene_sel').setScale(.15).setOrigin(0, 0)
+                this.add.image(80, 460, 'city_scene_sel').setScale(.15).setOrigin(0, 0)
                 this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
                 this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
                     
-                this.level = "default"
+                this.level = "city"
                     
             }
 
@@ -236,7 +239,8 @@ export class playerSelectScene extends Phaser.Scene {
 
                 this.sound.play('btn_hover');
 
-                this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
+                // this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
+                this.add.image(80, 460, 'city_scene').setScale(.15).setOrigin(0, 0)
                 this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene_sel').setScale(.15).setOrigin(0, 0)
                 this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
                     
@@ -249,7 +253,8 @@ export class playerSelectScene extends Phaser.Scene {
 
                 this.sound.play('btn_hover');
 
-                this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
+                // this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
+                this.add.image(80, 460, 'city_scene').setScale(.15).setOrigin(0, 0)
                 this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
                 this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene_sel').setScale(.15).setOrigin(0, 0)
                     

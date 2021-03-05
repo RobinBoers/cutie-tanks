@@ -1,0 +1,3 @@
+GAMEVARS.platforms.create(600, 400, 'stone');
+            GAMEVARS.platforms.create(50, 250, 'stone');
+            GAMEVARS.platforms.create(750, 220, 'stone');

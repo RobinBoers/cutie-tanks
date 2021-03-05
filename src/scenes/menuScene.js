@@ -15,6 +15,9 @@ export class menuScene extends Phaser.Scene {
     }
 
     create() {
+
+        this.cameras.main.fadeIn(CST.UI.FADEDURATION, 0, 0, 0)
+
         // this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
 
         this.background = this.add.tileSprite(0, 0, 3200, 600, 'title_bg').setOrigin(0);
@@ -45,7 +48,7 @@ export class menuScene extends Phaser.Scene {
 
         playButton.on("pointerup", () => {
             playButton.setScale(1.5);
-            this.scene.start(CST.SCENES.PLAYERSELECT, "Open player select.");
+            this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
             this.sound.play('btn_click');
         })
 
@@ -54,7 +57,7 @@ export class menuScene extends Phaser.Scene {
             if (button.index === 9) {
 
                 playButton.setScale(1.5);
-                this.scene.start(CST.SCENES.PLAYERSELECT, "Open player select.");
+                this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
                 // this.sound.play('btn_hover');
 
                 // setTimeout(200, () => {
@@ -63,6 +66,10 @@ export class menuScene extends Phaser.Scene {
 
             }
 
+        })
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.scene.start(CST.SCENES.PLAYERSELECT, "Open player select.");
         })
 
     }

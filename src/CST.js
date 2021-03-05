@@ -10,6 +10,7 @@ export const CST = {
     UI: {
         BACKGROUNDSCALE: 1, //.7
         BACKGROUNDSPEED: 1,
+        FADEDURATION: 500,
         TEXTCOLOR: "#ffffff",
         CARDCOLOR: 0x2E2A2C
     }

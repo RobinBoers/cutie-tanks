@@ -32,14 +32,17 @@ export class loadScene extends Phaser.Scene {
         this.load.image('default_scene', './assets/levels/default_button.png');
         this.load.image('factory_scene', './assets/levels/factory_button.png');
         this.load.image('forest_scene', './assets/levels/forest_button.png');
+        this.load.image('city_scene', './assets/levels/city_button.png');
 
         this.load.image('default_scene_sel', './assets/levels/default.png');
         this.load.image('factory_scene_sel', './assets/levels/factory.png');
         this.load.image('forest_scene_sel', './assets/levels/forest.png');
+        this.load.image('city_scene_sel', './assets/levels/city.png');
 
         this.load.image('bg', './assets/backgrounds/default.png');
         this.load.image('factory_bg', './assets/backgrounds/factory.png');
         this.load.image('forest_bg', './assets/backgrounds/forest.png');
+        this.load.image('city_bg', './assets/backgrounds/city.png');
 
         this.load.image('ground', './assets/tiles/platform.png');
         this.load.image('stone', './assets/tiles/platform2.png');
