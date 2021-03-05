@@ -14,7 +14,8 @@ export class loadScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.image('title_bg', './assets/backgrounds/menu5.png');
+        this.load.image('title_bg', './assets/backgrounds/menu7.png');
+        this.load.image('title_bg_still', './assets/backgrounds/menu6.png');
         this.load.image('title_text', './assets/text/title4.png');
         // this.load.audio('title_music', 'assets/music/awful.mp3');
 
@@ -24,6 +25,9 @@ export class loadScene extends Phaser.Scene {
 
         this.load.image('play_btn', './assets/text/play.png');
         this.load.image('join_btn', './assets/text/join.png');
+
+        this.load.image('press-down', './assets/text/press-down.png');
+        this.load.image('choose-level', './assets/text/choose-level.png');
 
         this.load.image('default_scene', './assets/levels/default_button.png');
         this.load.image('factory_scene', './assets/levels/factory_button.png');
@@ -38,6 +42,7 @@ export class loadScene extends Phaser.Scene {
         this.load.image('forest_bg', './assets/backgrounds/forest.png');
 
         this.load.image('ground', './assets/tiles/platform.png');
+        this.load.image('stone', './assets/tiles/platform2.png');
         this.load.image('log', './assets/tiles/log.png');
         this.load.image('pipe', './assets/tiles/pipe.png');
 

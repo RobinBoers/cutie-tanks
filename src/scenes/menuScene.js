@@ -15,8 +15,10 @@ export class menuScene extends Phaser.Scene {
     }
 
     create() {
+        // this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
 
-        this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
+        this.background = this.add.tileSprite(0, 0, 3200, 600, 'title_bg').setOrigin(0);
+
         this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.2, 'title_text').setDepth(1).setScale(3);
 
         let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.2 + 100, 'play_btn').setDepth(1).setScale(2);
@@ -63,5 +65,9 @@ export class menuScene extends Phaser.Scene {
 
         })
 
+    }
+
+    update() {
+        this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
     }
 }

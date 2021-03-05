@@ -19,15 +19,21 @@ export class playerSelectScene extends Phaser.Scene {
 
     create() {
 
-        this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
+        // this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
+
+        this.background = this.add.tileSprite(0, 0, 3200, 600, 'title_bg').setOrigin(0);
 
         let players = [];
         let joinedPlayers = [];
         let placeholders = [];
 
-        this.add.text(150, this.game.renderer.height * 0.1, 'Press down to join and change skin.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
+        // this.add.text(150, this.game.renderer.height * 0.1, 'Press down to join and change skin.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
 
-        this.add.text(100, 420, 'Choose a level. Press start when ready.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
+        this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.1 + 20, 'press-down').setScale(2);
+
+        // this.add.text(100, 420, 'Choose a level. Press start when ready.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
+
+        this.add.image(this.game.renderer.width / 2, 420 + 10, 'choose-level').setScale(2);
 
         this.level = "default";
 
@@ -110,7 +116,7 @@ export class playerSelectScene extends Phaser.Scene {
 
                 players[pad.index] = skin;
 
-                this.playerSprites[pad.index].anims.play(skin +'_idle' + (pad.index + 1), true);
+                this.playerSprites[pad.index].anims.play(skin + '_idle' + (pad.index + 1), true);
 
             }
 
@@ -130,7 +136,7 @@ export class playerSelectScene extends Phaser.Scene {
 
                 players[pad.index] = skin;
 
-                this.playerSprites[pad.index].anims.play(skin +'_idle' + (pad.index + 1), true);
+                this.playerSprites[pad.index].anims.play(skin + '_idle' + (pad.index + 1), true);
 
             }
 
@@ -172,89 +178,93 @@ export class playerSelectScene extends Phaser.Scene {
                 playerSpriteBottom.setDepth(4);
                 playerSpriteBottom.fillRect((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30) + 31, this.game.renderer.height * 0.2 + 153, 120, 3.2)
 
-                this.playerSprites[pad.index].anims.play(skin +'_idle' + (pad.index + 1), true);
+                this.playerSprites[pad.index].anims.play(skin + '_idle' + (pad.index + 1), true);
 
             }
 
             // if (pad.index == 0) {
-                // When player1 hits the back button
-                if (button.index === 8) {
+            // When player1 hits the back button
+            if (button.index === 8) {
 
-                    // Stop title screen music (otherwise it will play twice)
-                    this.sound.stopAll();
+                // Stop title screen music (otherwise it will play twice)
+                this.sound.stopAll();
 
-                    // Stop current scene
-                    this.scene.stop(CST.SCENES.PLAYERSELECT);
+                // Stop current scene
+                this.scene.stop(CST.SCENES.PLAYERSELECT);
 
-                    // Play sound
-                    this.sound.play('btn_back');
+                // Play sound
+                this.sound.play('btn_back');
 
-                    // Reset joined players
-                    joinedPlayers = [];
+                // Reset joined players
+                joinedPlayers = [];
 
-                    // Go back to main menu
-                    this.scene.start(CST.SCENES.MENU, "Exit player select.");
-                }
+                // Go back to main menu
+                this.scene.start(CST.SCENES.MENU, "Exit player select.");
+            }
 
-                // When player 1 hits the start button
-                if (button.index === 9 && players.length > 1) {
+            // When player 1 hits the start button
+            if (button.index === 9 && players.length > 1) {
 
-                    // Stop music
-                    this.sound.stopAll();
+                // Stop music
+                this.sound.stopAll();
 
-                    // Reset joined players for next time
-                    joinedPlayers = [];
+                // Reset joined players for next time
+                joinedPlayers = [];
 
-                    // Ply sound
-                    this.sound.play('btn_click');
+                // Ply sound
+                this.sound.play('btn_click');
 
-                    // Start game
-                    this.scene.start(CST.SCENES.GAME, [players, this.level]);
-                }
+                // Start game
+                this.scene.start(CST.SCENES.GAME, [players, this.level]);
+            }
 
-                // When player1 hits the a button (select default level)
-                if (button.index === 0) {
+            // When player1 hits the a button (select default level)
+            if (button.index === 0) {
 
-                    this.sound.play('btn_hover');
+                this.sound.play('btn_hover');
 
-                    this.add.image(80, 460, 'default_scene_sel').setScale(.15).setOrigin(0,0)
-                    this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0,0)
-                    this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
+                this.add.image(80, 460, 'default_scene_sel').setScale(.15).setOrigin(0, 0)
+                this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
+                this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
                     
-                    this.level = "default"
+                this.level = "default"
                     
-                }
+            }
 
-                // When player1 hits the x button (select forest level)
-                if (button.index === 2) {
+            // When player1 hits the x button (select forest level)
+            if (button.index === 2) {
 
-                    this.sound.play('btn_hover');
+                this.sound.play('btn_hover');
 
-                    this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0,0)
-                    this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene_sel').setScale(.15).setOrigin(0,0)
-                    this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
+                this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
+                this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene_sel').setScale(.15).setOrigin(0, 0)
+                this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
                     
-                    this.level = "forest"
+                this.level = "forest"
 
-                }
+            }
 
-                // When player1 hits the y button (select factory level)
-                if (button.index === 3) {
+            // When player1 hits the y button (select factory level)
+            if (button.index === 3) {
 
-                    this.sound.play('btn_hover');
+                this.sound.play('btn_hover');
 
-                    this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0,0)
-                    this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0,0)
-                    this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene_sel').setScale(.15).setOrigin(0, 0)
+                this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
+                this.add.image(90 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
+                this.add.image(100 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene_sel').setScale(.15).setOrigin(0, 0)
                     
-                    this.level = "factory"
+                this.level = "factory"
                     
-                }
+            }
             // }
             
 
-        })
+        }, this);
 
+    }
+
+    update() {
+        this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
     }
 
 }
