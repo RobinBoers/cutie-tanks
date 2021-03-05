@@ -28,6 +28,7 @@ export class playerSelectScene extends Phaser.Scene {
         let players = [];
         let joinedPlayers = [];
         let placeholders = [];
+        let joinedPlayersNum = 0;
 
         // this.add.text(150, this.game.renderer.height * 0.1, 'Press down to join and change skin.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
 
@@ -145,6 +146,8 @@ export class playerSelectScene extends Phaser.Scene {
             // When a player joins
             if (button.index === 13 && joinedPlayers[pad.index] !== true) {
 
+                joinedPlayersNum += 1;
+
                 this.currentSkin[pad.index] = 0;
 
                 let skin = this.skindex[this.currentSkin[pad.index]];
@@ -205,7 +208,7 @@ export class playerSelectScene extends Phaser.Scene {
             }
 
             // When player 1 hits the start button
-            if (button.index === 9 && players.length > 1) {
+            if (button.index === 9 && joinedPlayersNum > 1) {
 
                 // Stop music
                 this.sound.stopAll();
