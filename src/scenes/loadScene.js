@@ -49,9 +49,12 @@ export class loadScene extends Phaser.Scene {
         this.load.image('log', './assets/tiles/log.png');
         this.load.image('pipe', './assets/tiles/pipe.png');
 
+        this.load.image('jumppad', './assets/tiles/jumppad.png');
         this.load.image('bomb', './assets/sprites/fireball.png');
+
         this.load.audio('explosion', './assets/sounds/poof.wav');
         this.load.audio('shoot', './assets/sounds/shoot.wav');
+        this.load.audio('jump', './assets/sounds/jump2.wav');
 
         this.load.spritesheet('dude', './assets/sprites/dude.png', { frameWidth: 32, frameHeight: 48 });
 

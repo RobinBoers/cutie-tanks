@@ -25,6 +25,7 @@ export class gameScene extends Phaser.Scene {
 
         GAMEVARS.playersGroup = this.physics.add.group();
         GAMEVARS.platforms = this.physics.add.staticGroup();
+        GAMEVARS.jumppads = this.physics.add.group();
         GAMEVARS.bombs = this.physics.add.group({maxSize: 20}); // max 20 bombs at the same time in screen
 
         if (this.level == "factory") {
@@ -39,6 +40,7 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.platforms.create(600, 400, 'stone');
             GAMEVARS.platforms.create(50, 250, 'stone');
             GAMEVARS.platforms.create(750, 220, 'stone');
+            GAMEVARS.jumppads.create(430, 200, 'jumppad').setScale(4);
         } else if (this.level == "forest") {
             this.add.image(400, 260, 'forest_bg').setScale(3);
             GAMEVARS.platforms.create(50, 500, 'log');
@@ -52,6 +54,7 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.platforms.create(750, 220, 'ground');
         }
         
+        this.physics.add.collider(GAMEVARS.platforms, GAMEVARS.jumppads);
         this.physics.add.overlap(GAMEVARS.platforms, GAMEVARS.bombs, (platform, bomb) => {
 
             // this.cameras.main.shake(GAMEVARS.shakeDuration, GAMEVARS.shakeAmount);
@@ -66,6 +69,14 @@ export class gameScene extends Phaser.Scene {
         }, null, this);
         this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.platforms);
         this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.playersGroup);
+        this.physics.add.overlap(GAMEVARS.playersGroup, GAMEVARS.jumppads, (player) => {
+
+            // Play sound
+            this.sound.play('jump');
+
+            GAMEVARS.players[player.name].setVelocityY(-GAMEVARS.jumpSpeed * 1.5);
+
+        }, null, this);
         this.physics.add.overlap(GAMEVARS.playersGroup, GAMEVARS.bombs, (player, bomb) => {
 
             if (GAMEVARS.deadPlayers[player.name] === true) return;
