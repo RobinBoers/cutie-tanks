@@ -11,4 +11,4 @@ Also, there are skins. To join a game press down on the player select screen, an
 Controls
 The game is designed with a xbox controller in mind, but any controller should work. To move use the left analog stick. To aim use the right analog stick. To shoot use the analog right trigger.
 
-![](https://img.itch.zone/aW1nLzUzNjcyNTQucG5n/original/l5DsXF.png)
+![](artwork/controls.png)
