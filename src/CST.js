@@ -6,7 +6,7 @@ export const CST = {
         GAME: "GAME",
         END: "END"
     },
-    SKINS: ["tank", "ghost", "bot", "rainbow", "brow", "knight", "dutch", "pirate", "girl", "snow"],
+    SKINS: ["tank", "ghost", "bot", "rainbow", "brow", "knight", "dutch", "pirate", "girl", "indiaan", "snow"],
     UI: {
         BACKGROUNDSCALE: 1, //.7
         BACKGROUNDSPEED: 1,

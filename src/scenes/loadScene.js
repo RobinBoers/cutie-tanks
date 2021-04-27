@@ -68,6 +68,7 @@ export class loadScene extends Phaser.Scene {
             this.load.spritesheet('girl' + i, './assets/sprites/tanks/girl' + i + '.png', { frameWidth: 44, frameHeight: 33 });
             this.load.spritesheet('brow' + i, './assets/sprites/tanks/brow' + i + '.png', { frameWidth: 44, frameHeight: 33 });
             this.load.spritesheet('bot' + i, './assets/sprites/tanks/bot' + i + '.png', { frameWidth: 44, frameHeight: 33 });
+            this.load.spritesheet('indiaan' + i, './assets/sprites/tanks/indiaan' + i + '.png', { frameWidth: 44, frameHeight: 33 });
             this.load.spritesheet('snow' + i, './assets/sprites/tanks/snow' + i + '.png', { frameWidth: 44, frameHeight: 33 });
             this.load.spritesheet('knight' + i, './assets/sprites/tanks/knight' + i + '.png', { frameWidth: 44, frameHeight: 33 });
         }
