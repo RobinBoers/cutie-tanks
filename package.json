@@ -1,6 +1,6 @@
 {
 	"name": "cutie-tanks",
-	"version": "1.0.1",
+	"version": "1.2",
 	"description": "",
 	"scripts": {
 		"start": "parcel src/index.html -p 8000",
