@@ -117,9 +117,11 @@ export class gameScene extends Phaser.Scene {
             else if(player.name == 2) color = 0x3E9F49
             else if(player.name == 3) color = 0x9000FF
 
-            this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4, 20);
+            // Redraw background
+            this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4-20), 20);
 
-            this.add.graphics().fillStyle(color, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4 * (0.1 * GAMEVARS.playerHealth[player.name]), 20);
+            // Redraw health
+            this.add.graphics().fillStyle(color, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30 ), 10, (this.game.renderer.width / 4 -20) * (0.1 * GAMEVARS.playerHealth[player.name]), 20);
 
             // Remove bomb
             // to make space for new bombs
@@ -147,13 +149,13 @@ export class gameScene extends Phaser.Scene {
             else if (i == 3) color = 0x9000FF
             
             // Dropshadow
-            this.add.graphics().fillStyle(0x000000, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4) + offset, 10 + offset, this.game.renderer.width / 4, 20);
+            this.add.graphics().fillStyle(0x000000, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + offset, 10 + offset, (this.game.renderer.width / 4-20), 20);
  
             // Background (empty part)
-            this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4, 20);
+            this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4-20), 20);
 
             // Health itself
-            this.add.graphics().fillStyle(color, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4), 10, this.game.renderer.width / 4 * (0.1 * GAMEVARS.playerHealth[i]), 20);
+            this.add.graphics().fillStyle(color, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4 - 20) * (0.1 * GAMEVARS.playerHealth[i]), 20);
 
         }
         
@@ -295,7 +297,7 @@ export class gameScene extends Phaser.Scene {
 
             // Control player using analog stick
             // Movement only
-            if (gamepad.axes.length)
+            if (gamepad.axes.length >= 2)
             {
                 var axisH = gamepad.axes[0].getValue();
                 var axisV = gamepad.axes[1].getValue();
@@ -314,7 +316,7 @@ export class gameScene extends Phaser.Scene {
 
             // Control player using analog stick
             // Aim only
-            if (gamepad.axes.length)
+            if (gamepad.axes.length >= 3)
             {
                 var axisH = gamepad.axes[2].getValue();
                 var axisV = gamepad.axes[3].getValue();
