@@ -127,6 +127,7 @@ export class gameScene extends Phaser.Scene {
 
         }, null, this);
 
+        // Add health bars at the top of the screen
         for (var i = 0; i < GAMEVARS.tempPlayers.length; i++) {
             GAMEVARS.players[i] = GAMEVARS.playersGroup.create(Phaser.Math.Between(200, 600), Phaser.Math.Between(100, 500), GAMEVARS.tempPlayers[i]+(i+1)).setBounce(0.2).setScale(1.4);
 
@@ -371,6 +372,10 @@ export class gameScene extends Phaser.Scene {
         // Screenwrapping
         this.physics.world.wrap(GAMEVARS.playersGroup, 10);     //32 padding
 
+        // Reset count to recount
+        GAMEVARS.deadPlayerCount = 0;
+
+        // Count dead players
         for (var i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
             if (GAMEVARS.deadPlayers[i] === true) GAMEVARS.deadPlayerCount += 1;
         }
