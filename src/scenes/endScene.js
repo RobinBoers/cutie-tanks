@@ -10,10 +10,12 @@ export class endScene extends Phaser.Scene {
 
     winner = null
     skin = null
+    oldSkins = null
 
     init(data) {
         this.winner = data[0];
         this.skin = data[1];
+        this.oldSkins = data[2];
     }
 
     create() {
@@ -106,7 +108,7 @@ export class endScene extends Phaser.Scene {
         })
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start(CST.SCENES.PLAYERSELECT, "Open player select.");
+            this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select.", this.oldSkins]);
         })
 
     }

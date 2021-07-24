@@ -10,11 +10,16 @@ export class playerSelectScene extends Phaser.Scene {
 
     level = "default"
     skindex = CST.SKINS;
-    currentSkin = [];
+    currentSkin = [0,0,0,0];
     playerSprites = [];
 
     init(data) {
-        console.log(data);
+        console.log(data[0]);
+        if(data[1]) {
+            for(var i = 0;i<data[1].length;i++) {
+                this.currentSkin[i] = this.skindex.indexOf(data[1][i]);
+            }
+        }
     }
 
     create() {
@@ -147,8 +152,6 @@ export class playerSelectScene extends Phaser.Scene {
             if (button.index === 13 && joinedPlayers[pad.index] !== true) {
 
                 joinedPlayersNum += 1;
-
-                this.currentSkin[pad.index] = 0;
 
                 let skin = this.skindex[this.currentSkin[pad.index]];
                 let playerSkin = skin + (pad.index + 1);

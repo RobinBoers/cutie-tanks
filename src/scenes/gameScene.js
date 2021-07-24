@@ -21,7 +21,7 @@ export class gameScene extends Phaser.Scene {
         // Speed limit
         var speedLimit = 2000;
         var knockback = 70;
-        var maxHealth = 10;
+        var maxHealth = 1;
 
         GAMEVARS.playersGroup = this.physics.add.group();
         GAMEVARS.platforms = this.physics.add.staticGroup();
@@ -403,7 +403,7 @@ export class gameScene extends Phaser.Scene {
                     GAMEVARS.deadPlayers = [];
                     GAMEVARS.deadPlayerCount = 0;
 
-                    this.scene.start(CST.SCENES.MENU, [true, i+1, skin]);
+                    this.scene.start(CST.SCENES.MENU, [true, i+1, skin, GAMEVARS.playerSkins]);
                 }
             }
         }

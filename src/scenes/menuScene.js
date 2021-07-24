@@ -10,7 +10,7 @@ export class menuScene extends Phaser.Scene {
 
     init(data) {
         if (data[0] === true) {
-            this.scene.start(CST.SCENES.END, [data[1], data[2]]);
+            this.scene.start(CST.SCENES.END, [data[1], data[2], data[3]]);
         }
     }
 
@@ -69,7 +69,7 @@ export class menuScene extends Phaser.Scene {
         })
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start(CST.SCENES.PLAYERSELECT, "Open player select.");
+            this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select."]);
         })
 
     }
