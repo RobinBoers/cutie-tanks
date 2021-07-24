@@ -11,13 +11,27 @@ export class playerSelectScene extends Phaser.Scene {
     level = "default"
     skindex = CST.SKINS;
     currentSkin = [0,0,0,0];
+    currentLevel = 0;
     playerSprites = [];
 
     init(data) {
         console.log(data[0]);
+
         if(data[1]) {
             for(var i = 0;i<data[1].length;i++) {
                 this.currentSkin[i] = this.skindex.indexOf(data[1][i]);
+            }
+        }
+
+        if(data[2]) {
+            this.level = data[2];
+            
+            if(this.level == "city") {
+                this.currentLevel = 0
+            } else if(this.level == "forest") {
+                this.currentLevel = 1
+            } else if(this.level == "factory") {
+                this.currentLevel = 2
             }
         }
     }
@@ -43,11 +57,7 @@ export class playerSelectScene extends Phaser.Scene {
 
         this.add.image(this.game.renderer.width / 2, 420 + 10, 'choose-level').setScale(2);
 
-        this.level = "city";
-
-        this.add.image(95, 460, 'city_scene_sel').setScale(.15).setOrigin(0,0)
-        this.add.image(105 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0,0)
-        this.add.image(115 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
+        this.refreshLevels();
         
         // placeholder boxes
 
@@ -226,48 +236,51 @@ export class playerSelectScene extends Phaser.Scene {
                 this.scene.start(CST.SCENES.GAME, [players, this.level]);
             }
 
-            // When player1 hits the a button (select default level)
-            if (button.index === 0) {
+            // Change level (to left)
+            if(button.index == 14) {
 
                 this.sound.play('btn_hover');
 
-                // this.add.image(80, 460, 'default_scene_sel').setScale(.15).setOrigin(0, 0)
-                this.add.image(95, 460, 'city_scene_sel').setScale(.15).setOrigin(0, 0)
+                if(this.currentLevel > 0) {
+                    this.currentLevel -= 1;
+                }
+
+                this.refreshLevels();
+ 
+            }
+
+            if(button.index == 15) {
+
+                this.sound.play('btn_hover');
+
+                if(this.currentLevel < 2) {
+                    this.currentLevel += 1;
+                }
+
+                this.refreshLevels();
+ 
+            }
+
+            // Random level (y button)
+            if(button.index == 3) {
+                this.sound.play('btn_hover');
+
+                let maxLevels = 2;
+
+                this.currentLevel = Math.floor(Math.random() * (maxLevels - 0 + 1) + 0);
+
+                if(this.currentLevel == 0) {
+                    this.level = "city"
+                } else if(this.currentLevel == 1) {
+                    this.level = "forest"
+                } else if(this.currentLevel == 2) {
+                    this.level = "factory"
+                }
+
+                this.add.image(95, 460, 'city_scene').setScale(.15).setOrigin(0, 0)
                 this.add.image(105 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
                 this.add.image(115 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
-                    
-                this.level = "city"
-                    
             }
-
-            // When player1 hits the x button (select forest level)
-            if (button.index === 2) {
-
-                this.sound.play('btn_hover');
-
-                // this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
-                this.add.image(95, 460, 'city_scene').setScale(.15).setOrigin(0, 0)
-                this.add.image(105 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene_sel').setScale(.15).setOrigin(0, 0)
-                this.add.image(115 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
-                    
-                this.level = "forest"
-
-            }
-
-            // When player1 hits the y button (select factory level)
-            if (button.index === 3) {
-
-                this.sound.play('btn_hover');
-
-                // this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
-                this.add.image(95, 460, 'city_scene').setScale(.15).setOrigin(0, 0)
-                this.add.image(105 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
-                this.add.image(115 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene_sel').setScale(.15).setOrigin(0, 0)
-                    
-                this.level = "factory"
-                    
-            }
-            // }
             
 
         }, this);
@@ -276,6 +289,31 @@ export class playerSelectScene extends Phaser.Scene {
 
     update() {
         this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
+    }
+
+    refreshLevels() {
+        if(this.currentLevel == 0) {
+            // this.add.image(80, 460, 'default_scene_sel').setScale(.15).setOrigin(0, 0)
+            this.add.image(95, 460, 'city_scene_sel').setScale(.15).setOrigin(0, 0)
+            this.add.image(105 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
+            this.add.image(115 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
+                
+            this.level = "city"
+        } else if(this.currentLevel == 1) {
+            // this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
+            this.add.image(95, 460, 'city_scene').setScale(.15).setOrigin(0, 0)
+            this.add.image(105 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene_sel').setScale(.15).setOrigin(0, 0)
+            this.add.image(115 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
+                
+            this.level = "forest"
+        } else if(this.currentLevel == 2) {
+            // this.add.image(80, 460, 'default_scene').setScale(.15).setOrigin(0, 0)
+            this.add.image(95, 460, 'city_scene').setScale(.15).setOrigin(0, 0)
+            this.add.image(105 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
+            this.add.image(115 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene_sel').setScale(.15).setOrigin(0, 0)
+                
+            this.level = "factory"
+        }
     }
 
 }

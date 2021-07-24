@@ -10,7 +10,7 @@ export class menuScene extends Phaser.Scene {
 
     init(data) {
         if (data[0] === true) {
-            this.scene.start(CST.SCENES.END, [data[1], data[2], data[3]]);
+            this.scene.start(CST.SCENES.END, [data[1], data[2], data[3], data[4]]);
         }
     }
 
