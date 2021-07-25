@@ -26,6 +26,8 @@ export const GAMEVARS = {
         2000,
         70,
         530,
-        20
-    ]
+        20,
+        false
+    ],
+    invulnerable: false
 }

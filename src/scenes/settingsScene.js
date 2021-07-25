@@ -21,7 +21,8 @@ export class settingsScene extends Phaser.Scene {
         "Speed Limit",
         "Knockback",
         "Jump Speed",
-        "Cooldown"
+        "Cooldown",
+        "Invulnerable"
     ]
     optionText = [];
 
@@ -32,6 +33,7 @@ export class settingsScene extends Phaser.Scene {
     // - knockback
     // - jump speed
     // - cooldown
+    // - invulnerability
 
     fireDelay = 10;
     fireTimer = this.fireDelay;
@@ -98,17 +100,34 @@ export class settingsScene extends Phaser.Scene {
             // Change option (to left)
             if(button.index == 14) {
                 this.sound.play('btn_hover');
-                if(this.options[this.currentOption] > 1) this.options[this.currentOption] -= 1;
+                if(this.currentOption == 6) {
+                    if(this.options[this.currentOption] == false) {
+                        this.options[this.currentOption] = true
+                    } else {
+                        this.options[this.currentOption] = false
+                    }
+                }
+                // @ts-ignore
+                else if(this.options[this.currentOption] > 1) this.options[this.currentOption] -= 1;
                 this.updateOptions();
             }
 
             // Change option (to right)
             if(button.index == 15) {
                 this.sound.play('btn_hover');
-                this.options[this.currentOption] += 1;
+                if(this.currentOption == 6) {
+                    if(this.options[this.currentOption] == false) {
+                        this.options[this.currentOption] = true
+                    } else {
+                        this.options[this.currentOption] = false
+                    }
+                }
+                else {
+                    // @ts-ignore
+                    this.options[this.currentOption] += 1;
+                }
                 this.updateOptions();
             }
-            
 
         }, this);
 
@@ -134,7 +153,15 @@ export class settingsScene extends Phaser.Scene {
                         this.fireTimer = 0;
                         this.sound.play('btn_hover');
                         
-                        if(this.options[this.currentOption] > 1) this.options[this.currentOption] -= 1;
+                        if(this.currentOption == 6) {
+                            if(this.options[this.currentOption] == false) {
+                                this.options[this.currentOption] = true
+                            } else {
+                                this.options[this.currentOption] = false
+                            }
+                        }
+                        // @ts-ignore
+                        else if(this.options[this.currentOption] > 1) this.options[this.currentOption] -= 1;
                         this.updateOptions();
 
                     }
@@ -145,7 +172,17 @@ export class settingsScene extends Phaser.Scene {
                         this.fireTimer = 0;
                         this.sound.play('btn_hover');
 
-                        this.options[this.currentOption] += 1;
+                        if(this.currentOption == 6) {
+                            if(this.options[this.currentOption] == false) {
+                                this.options[this.currentOption] = true
+                            } else {
+                                this.options[this.currentOption] = false
+                            }
+                        }
+                        else {
+                            // @ts-ignore
+                            this.options[this.currentOption] += 1;
+                        }
                         this.updateOptions();   
 
                     }

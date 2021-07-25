@@ -24,6 +24,7 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.knockback = tempVars[3];
             GAMEVARS.jumpSpeed = tempVars[4];
             GAMEVARS.cooldown = tempVars[5];
+            GAMEVARS.invulnerable = tempVars[6];
         }
     }
 
@@ -72,7 +73,9 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.platforms.create(750, 220, 'ground');
         }
         
+        // @ts-ignore
         this.physics.add.collider(GAMEVARS.platforms, GAMEVARS.jumppads);
+        // @ts-ignore
         this.physics.add.overlap(GAMEVARS.platforms, GAMEVARS.bombs, (platform, bomb) => {
 
             // this.cameras.main.shake(GAMEVARS.shakeDuration, GAMEVARS.shakeAmount);
@@ -85,12 +88,16 @@ export class gameScene extends Phaser.Scene {
             bomb.destroy();
             
         }, null, this);
+        // @ts-ignore
         this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.platforms);
+        // @ts-ignore
         this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.belts, (player) => {
             GAMEVARS.players[player.name].x += GAMEVARS.playerSpeed * .01;
 
         });
+        // @ts-ignore
         this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.playersGroup);
+        // @ts-ignore
         this.physics.add.overlap(GAMEVARS.playersGroup, GAMEVARS.jumppads, (player) => {
 
             // Play sound
@@ -99,6 +106,7 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.players[player.name].setVelocityY(-GAMEVARS.jumpSpeed * 1.5);
 
         }, null, this);
+        // @ts-ignore
         this.physics.add.overlap(GAMEVARS.playersGroup, GAMEVARS.bombs, (player, bomb) => {
 
             if (GAMEVARS.deadPlayers[player.name] === true) return;
@@ -106,9 +114,13 @@ export class gameScene extends Phaser.Scene {
             this.cameras.main.shake(GAMEVARS.shakeDuration, GAMEVARS.shakeAmount);
 
             // Knockback
+            // @ts-ignore
             if (bomb.x > player.x) {
+                // @ts-ignore
                 player.x = player.x - GAMEVARS.knockback;
+                // @ts-ignore
             } else if (bomb.x < player.x) {
+                // @ts-ignore
                 player.x = player.x + GAMEVARS.knockback;
             }
 
@@ -116,17 +128,23 @@ export class gameScene extends Phaser.Scene {
             this.sound.play('explosion');
 
             // Damage player
-            GAMEVARS.playerHealth[player.name] -= 1;
+            if(!GAMEVARS.invulnerable) GAMEVARS.playerHealth[player.name] -= 1;
 
+            // @ts-ignore
             if(player.name == 0) color = 0x507ECE
+            // @ts-ignore
             else if(player.name == 1) color = 0xD53F2B
+            // @ts-ignore
             else if(player.name == 2) color = 0x3E9F49
+            // @ts-ignore
             else if(player.name == 3) color = 0x9000FF
 
             // Redraw background
+            // @ts-ignore
             this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4-20), 20);
 
             // Redraw health
+            // @ts-ignore
             this.add.graphics().fillStyle(color, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30 ), 10, (this.game.renderer.width / 4 -20) * (GAMEVARS.playerHealth[player.name] / GAMEVARS.maxHealth), 20);
 
             // Remove bomb
