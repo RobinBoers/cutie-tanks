@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { CST } from "../CST";
+import { GAMEVARS } from '../GAMEVARS';
 
 export class settingsScene extends Phaser.Scene {
     constructor() {
@@ -13,14 +14,7 @@ export class settingsScene extends Phaser.Scene {
     }
 
     currentOption = 0;
-    options = [
-        10,
-        200,
-        2000,
-        70,
-        530,
-        20
-    ];
+    options = [...GAMEVARS.defaultOptions];
     optionNames = [
         "Max Health",
         "Player Speed",

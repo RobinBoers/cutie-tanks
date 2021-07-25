@@ -19,5 +19,13 @@ export const GAMEVARS = {
     playerHealth: [],
     deadPlayerCount: 0,
     shakeAmount: .01,
-    shakeDuration: 100
+    shakeDuration: 100,
+    defaultOptions: [
+        10,
+        200,
+        2000,
+        70,
+        530,
+        20
+    ]
 }

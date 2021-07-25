@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { CST } from "../CST";
+import { GAMEVARS } from '../GAMEVARS';
 
 export class modeScene extends Phaser.Scene {
     constructor() {
@@ -55,7 +56,7 @@ export class modeScene extends Phaser.Scene {
                 this.sound.play('btn_click');
 
                 // If mode is single match, open player select
-                if(this.currentMode == 0) this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select"]);
+                if(this.currentMode == 0) this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select",false,false,GAMEVARS.defaultOptions]);
                 // If it is freeplay, open the freeplay settings
                 else this.scene.start(CST.SCENES.SETTINGS, ["Open settings menu."]);
             }
