@@ -333,6 +333,7 @@ export class playerSelectScene extends Phaser.Scene {
                     // When a player joins
                     if (axisV > 0.8 && this.fireTimer > this.fireDelay && this.joinedPlayers[i] !== true) {
 
+                        this.fireTimer = 0;
                         this.joinPlayer(i);
                        
                     }
