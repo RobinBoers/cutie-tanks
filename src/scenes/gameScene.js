@@ -127,7 +127,7 @@ export class gameScene extends Phaser.Scene {
             this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4-20), 20);
 
             // Redraw health
-            this.add.graphics().fillStyle(color, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30 ), 10, (this.game.renderer.width / 4 -20) * (0.1 * GAMEVARS.playerHealth[player.name]), 20);
+            this.add.graphics().fillStyle(color, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30 ), 10, (this.game.renderer.width / 4 -20) * (GAMEVARS.playerHealth[player.name] / GAMEVARS.maxHealth), 20);
 
             // Remove bomb
             // to make space for new bombs
@@ -161,7 +161,7 @@ export class gameScene extends Phaser.Scene {
             this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4-20), 20);
 
             // Health itself
-            this.add.graphics().fillStyle(color, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4 - 20) * (0.1 * GAMEVARS.playerHealth[i]), 20);
+            this.add.graphics().fillStyle(color, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4 - 20) * (GAMEVARS.playerHealth[i] / GAMEVARS.maxHealth), 20);
 
         }
         

@@ -9,6 +9,7 @@ export class menuScene extends Phaser.Scene {
     }
 
     init(data) {
+        // If round ends, open winner screen
         if (data[0] === true) {
             this.scene.start(CST.SCENES.END, [data[1], data[2], data[3], data[4]]);
         }
@@ -16,6 +17,7 @@ export class menuScene extends Phaser.Scene {
 
     create() {
 
+        // Cool fade effect
         this.cameras.main.fadeIn(CST.UI.FADEDURATION, 0, 0, 0)
 
         // this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
@@ -28,6 +30,7 @@ export class menuScene extends Phaser.Scene {
 
         this.add.text(this.game.renderer.width / 2.57, this.game.renderer.height * 0.8, 'Press start', { font: '24px Courier', color: CST.UI.TEXTCOLOR });
 
+        // Music (currently disabled)
         // this.sound.pauseOnBlur = false;
         // let titleMusic = this.sound.add('title_music', {
         //     loop: true
@@ -35,8 +38,10 @@ export class menuScene extends Phaser.Scene {
 
         // titleMusic.play();
 
+        // Make play button interactive
         playButton.setInteractive();
 
+        // On hover
         playButton.on("pointerover", () => {
             playButton.setScale(2.5);
             this.sound.play('btn_hover');
@@ -46,35 +51,29 @@ export class menuScene extends Phaser.Scene {
             playButton.setScale(2);
         })
 
+        // If the play button is pressed, start animation
         playButton.on("pointerup", () => {
             playButton.setScale(1.5);
-            this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
             this.sound.play('btn_click');
+            this.scene.start(CST.SCENES.MODE, ["Open mode selection."]);
         })
 
+        // If start or A is pressed, start animation
         this.input.gamepad.on("down", (pad, button) => {
 
-            if (button.index === 9) {
+            if (button.index === 9 || button.index == 0) {
 
                 playButton.setScale(1.5);
-                this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
-                // this.sound.play('btn_hover');
-
-                // setTimeout(200, () => {
-                    this.sound.play('btn_click');
-                // })
-
+                this.sound.play('btn_click');
+                this.scene.start(CST.SCENES.MODE, ["Open mode selection."]);
             }
 
-        })
-
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(CST.SCENES.MODE, ["Open mode selection."]);
         })
 
     }
 
     update() {
+        // Animate background
         this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
     }
 }

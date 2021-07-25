@@ -4,6 +4,7 @@ export const CST = {
         MENU: "MENU",
         PLAYERSELECT: "PLAYERSELECT",
         MODE: "MODE",
+        SETTINGS: "SETTINGS",
         GAME: "GAME",
         END: "END"
     },

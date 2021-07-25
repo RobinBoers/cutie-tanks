@@ -13,6 +13,7 @@ export class playerSelectScene extends Phaser.Scene {
     currentSkin = [0,0,0,0];
     currentLevel = 0;
     playerSprites = [];
+    customSettings = false;
 
     init(data) {
         console.log(data[0]);
@@ -33,6 +34,11 @@ export class playerSelectScene extends Phaser.Scene {
             } else if(this.level == "factory") {
                 this.currentLevel = 2
             }
+        }
+
+        if(data[3]) {
+            this.customSettings = true;
+            this.options = data[3];
         }
     }
 
@@ -202,7 +208,7 @@ export class playerSelectScene extends Phaser.Scene {
 
             // if (pad.index == 0) {
             // When player1 hits the back button
-            if (button.index === 8) {
+            if (button.index === 8 || button.index == 1) {
 
                 // Stop title screen music (otherwise it will play twice)
                 this.sound.stopAll();
@@ -216,12 +222,12 @@ export class playerSelectScene extends Phaser.Scene {
                 // Reset joined players
                 joinedPlayers = [];
 
-                // Go back to main menu
+                // Go back to mode selection
                 this.scene.start(CST.SCENES.MODE, ["Back to mode select. Exit player select."]);
             }
 
             // When player 1 hits the start button
-            if (button.index === 9 && joinedPlayersNum > 1) {
+            if ((button.index === 9 || button.index == 0) && joinedPlayersNum > 1) {
 
                 // Stop music
                 this.sound.stopAll();
@@ -229,11 +235,15 @@ export class playerSelectScene extends Phaser.Scene {
                 // Reset joined players for next time
                 joinedPlayers = [];
 
-                // Ply sound
+                // Play sound
                 this.sound.play('btn_click');
 
                 // Start game
-                this.scene.start(CST.SCENES.GAME, [players, this.level]);
+                if(this.customSettings == true) {
+                    this.scene.start(CST.SCENES.GAME, [players, this.level, this.options]);
+                } else {
+                    this.scene.start(CST.SCENES.GAME, [players, this.level]);
+                }
             }
 
             // Change level (to left)

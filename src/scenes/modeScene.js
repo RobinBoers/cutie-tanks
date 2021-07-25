@@ -8,6 +8,8 @@ export class modeScene extends Phaser.Scene {
         })
     }
 
+    currentMode = 0;
+
     init(data) {
         console.log(data[0]);
     }
@@ -20,11 +22,13 @@ export class modeScene extends Phaser.Scene {
 
         this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.1 + 20, 'choose-mode').setScale(2);
 
+        this.updateMode();
+
         this.input.gamepad.on("down", (pad, button) => {
 
             // if (pad.index == 0) {
-            // When player1 hits the back button
-            if (button.index === 8) {
+            // When player1 hits the back button (or b)
+            if (button.index === 8 || button.index == 1) {
 
                 // Stop title screen music (otherwise it will play twice)
                 this.sound.stopAll();
@@ -39,29 +43,43 @@ export class modeScene extends Phaser.Scene {
                 this.scene.start(CST.SCENES.MENU, [false]);
             }
 
-            // When player 1 hits the start button
-            if (button.index === 9) {
+            // When player 1 hits the start button (or a)
+            if (button.index === 9 || button.index === 0) {
 
                 // Stop music
                 this.sound.stopAll();
 
-                // Ply sound
+                // Play sound
                 this.sound.play('btn_click');
 
-                // Start game
-                this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select"]);
+                // If mode is single match, open player select
+                if(this.currentMode == 0) this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select"]);
+                // If it is freeplay, open the freeplay settings
+                else this.scene.start(CST.SCENES.SETTINGS, ["Open settings menu."]);
             }
 
             // Change mode (to left)
             if(button.index == 14) {
+
                 this.sound.play('btn_hover');
-                console.log("Prev mode");
+
+                if(this.currentMode > 0) {
+                    this.currentMode -= 1
+                }
+
+                this.updateMode();
             }
 
             // Change mode (to right)
             if(button.index == 15) {
+
                 this.sound.play('btn_hover');
-                console.log("Next mode");
+
+                if(this.currentMode < 2) {
+                    this.currentMode += 1
+                }
+
+                this.updateMode();
             }
             
 
@@ -71,6 +89,20 @@ export class modeScene extends Phaser.Scene {
 
     update() {
         this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
+    }
+
+    updateMode() {
+        if(this.currentMode == 0) {
+
+            this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'forest_scene_sel').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2) + 10, 200, 'factory_scene').setScale(.25).setOrigin(0, 0)
+            
+        } else {
+
+            this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'forest_scene').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2) + 10, 200, 'factory_scene_sel').setScale(.25).setOrigin(0, 0)
+
+        }
     }
 
 }
