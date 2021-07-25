@@ -45,6 +45,11 @@ export class playerSelectScene extends Phaser.Scene {
         }
     }
 
+    players = [];
+    joinedPlayers = [];
+    placeholders = [];
+    joinedPlayersNum = 0;
+
     create() {
 
         this.cameras.main.fadeIn(CST.UI.FADEDURATION, 0, 0, 0)
@@ -52,11 +57,6 @@ export class playerSelectScene extends Phaser.Scene {
         // this.add.image(0, 0, 'title_bg').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
 
         this.background = this.add.tileSprite(0, 0, 3200, 600, 'title_bg').setOrigin(0);
-
-        let players = [];
-        let joinedPlayers = [];
-        let placeholders = [];
-        let joinedPlayersNum = 0;
 
         // this.add.text(150, this.game.renderer.height * 0.1, 'Press down to join and change skin.', { font: '24px Courier', color: CST.UI.TEXTCOLOR });
 
@@ -83,7 +83,7 @@ export class playerSelectScene extends Phaser.Scene {
 
             boxShadow.fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4 - 20, 240).setDepth(0);
 
-            placeholders[i] = this.add.image((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + 90, this.game.renderer.height * 0.2 + 100, 'join_btn').setDepth(2).setScale(3.2);
+            this.placeholders[i] = this.add.image((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + 90, this.game.renderer.height * 0.2 + 100, 'join_btn').setDepth(2).setScale(3.2);
         }
 
         for (var x = 1; x < 5; x++) {
@@ -128,7 +128,7 @@ export class playerSelectScene extends Phaser.Scene {
         this.input.gamepad.on("down", (pad, button) => {
 
             // Change skin
-            if (button.index === 13 && joinedPlayers[pad.index] === true) {
+            if (button.index === 13 && this.joinedPlayers[pad.index] === true) {
 
                 this.sound.play('btn_hover');
 
@@ -141,71 +141,36 @@ export class playerSelectScene extends Phaser.Scene {
                 let skin = this.skindex[this.currentSkin[pad.index]];
                 // let playerSkin = skin + (pad.index + 1);
 
-                players[pad.index] = skin;
+                this.players[pad.index] = skin;
 
                 this.playerSprites[pad.index].anims.play(skin + '_idle' + (pad.index + 1), true);
 
             }
 
             // Change skin
-            if (button.index === 12 && joinedPlayers[pad.index] === true) {
+            if (button.index === 12 && this.joinedPlayers[pad.index] === true) {
 
                 this.sound.play('btn_hover');
 
                 this.currentSkin[pad.index] -= 1;
 
                 if (this.currentSkin[pad.index] < 0) {
-                    this.currentSkin[pad.index] = this.skindex.length;
+                    this.currentSkin[pad.index] = this.skindex.length - 1;
                 }
 
                 let skin = this.skindex[this.currentSkin[pad.index]];
                 // let playerSkin = skin + (pad.index + 1);
 
-                players[pad.index] = skin;
+                this.players[pad.index] = skin;
 
                 this.playerSprites[pad.index].anims.play(skin + '_idle' + (pad.index + 1), true);
 
             }
 
             // When a player joins
-            if (button.index === 13 && joinedPlayers[pad.index] !== true) {
+            if (button.index === 13 && this.joinedPlayers[pad.index] !== true) {
 
-                joinedPlayersNum += 1;
-
-                let skin = this.skindex[this.currentSkin[pad.index]];
-                let playerSkin = skin + (pad.index + 1);
-
-                players[pad.index] = skin;
-
-                joinedPlayers[pad.index] = true;
-
-                this.sound.play('btn_hover');
-
-                let playerBox = this.add.graphics();
-                playerBox.fillStyle(CST.UI.CARDCOLOR, 1.0);
-
-                let boxShadow = this.add.graphics();
-                boxShadow.fillStyle(0x000000, 1.0);
-
-                let offset = 2;
-
-                playerBox.fillRect((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30), this.game.renderer.height * 0.2, this.game.renderer.width / 4 - 20, 240).setDepth(1);
-
-                boxShadow.fillRect((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30) + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4 - 20, 240).setDepth(0);
-
-                this.add.text((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30) + 37, this.game.renderer.height * 0.2 + 200, 'Player ' + (pad.index + 1), { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
-
-                let playerSpriteBottom = this.add.graphics();
-                playerSpriteBottom.fillStyle(0xffffff, 1.0);
-
-                this.playerSprites[pad.index] = this.add.sprite((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30) + 90, this.game.renderer.height * 0.2 + 100, playerSkin).setDepth(2).setScale(3.2);
-
-                placeholders[pad.index].setVisible(false);
-
-                playerSpriteBottom.setDepth(4);
-                playerSpriteBottom.fillRect((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30) + 31, this.game.renderer.height * 0.2 + 153, 120, 3.2)
-
-                this.playerSprites[pad.index].anims.play(skin + '_idle' + (pad.index + 1), true);
+                this.joinPlayer(pad.index);
 
             }
 
@@ -223,29 +188,29 @@ export class playerSelectScene extends Phaser.Scene {
                 this.sound.play('btn_back');
 
                 // Reset joined players
-                joinedPlayers = [];
+                this.joinedPlayers = [];
 
                 // Go back to mode selection
                 this.scene.start(CST.SCENES.MODE, ["Back to mode select. Exit player select."]);
             }
 
             // When player 1 hits the start button
-            if ((button.index === 9 || button.index == 0) && joinedPlayersNum > 1) {
+            if ((button.index === 9 || button.index == 0) && this.joinedPlayersNum > 1) {
 
                 // Stop music
                 this.sound.stopAll();
 
                 // Reset joined players for next time
-                joinedPlayers = [];
+                this.joinedPlayers = [];
 
                 // Play sound
                 this.sound.play('btn_click');
 
                 // Start game
                 if(this.customSettings == true) {
-                    this.scene.start(CST.SCENES.GAME, [players, this.level, this.options]);
+                    this.scene.start(CST.SCENES.GAME, [this.players, this.level, this.options]);
                 } else {
-                    this.scene.start(CST.SCENES.GAME, [players, this.level]);
+                    this.scene.start(CST.SCENES.GAME, [this.players, this.level]);
                 }
             }
 
@@ -341,6 +306,57 @@ export class playerSelectScene extends Phaser.Scene {
                         this.refreshLevels();
 
                     } // right
+
+                    // Select skin (down)
+                    let axisV = gamepad.axes[1].getValue();
+                        
+                    if (axisV > 0.8 && this.fireTimer > this.fireDelay && this.joinedPlayers[i] === true) {
+
+                        this.fireTimer = 0;
+                        this.sound.play('btn_hover');
+
+                        this.currentSkin[i] += 1;
+
+                        if (!this.skindex[this.currentSkin[i]]) {
+                            this.currentSkin[i] = 0;
+                        }
+
+                        let skin = this.skindex[this.currentSkin[i]];
+                        // let playerSkin = skin + (i + 1);
+
+                        this.players[i] = skin;
+
+                        this.playerSprites[i].anims.play(skin + '_idle' + (i + 1), true);
+
+                    }
+                    
+                    // When a player joins
+                    if (axisV > 0.8 && this.fireTimer > this.fireDelay && this.joinedPlayers[i] !== true) {
+
+                        this.joinPlayer(i);
+                       
+                    }
+
+                    // Select skin (up)
+                    if (axisV < -0.8 && this.fireTimer > this.fireDelay && this.joinedPlayers[i] === true) {
+
+                        this.fireTimer = 0;
+                        this.sound.play('btn_hover');
+
+                        this.currentSkin[i] -= 1;
+
+                        if (this.currentSkin[i] < 0) {
+                            this.currentSkin[i] = this.skindex.length - 1;
+                        }
+
+                        let skin = this.skindex[this.currentSkin[i]];
+                        // let playerSkin = skin + (i + 1);
+
+                        this.players[i] = skin;
+
+                        this.playerSprites[i].anims.play(skin + '_idle' + (i + 1), true);
+
+                    }
                 }
             }        
         }
@@ -369,6 +385,46 @@ export class playerSelectScene extends Phaser.Scene {
                 
             this.level = "factory"
         }
+    }
+
+    joinPlayer(i) {
+
+        this.joinedPlayersNum += 1;
+
+        let skin = this.skindex[this.currentSkin[i]];
+        let playerSkin = skin + (i + 1);
+
+        this.players[i] = skin;
+
+        this.joinedPlayers[i] = true;
+
+        this.sound.play('btn_hover');
+
+        let playerBox = this.add.graphics();
+        playerBox.fillStyle(CST.UI.CARDCOLOR, 1.0);
+
+        let boxShadow = this.add.graphics();
+        boxShadow.fillStyle(0x000000, 1.0);
+
+        let offset = 2;
+
+        playerBox.fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), this.game.renderer.height * 0.2, this.game.renderer.width / 4 - 20, 240).setDepth(1);
+
+        boxShadow.fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4 - 20, 240).setDepth(0);
+
+        this.add.text((i + 1) * 20 +i * (this.game.renderer.width / 4 - 30) + 37, this.game.renderer.height * 0.2 + 200, 'Player ' + (i + 1), { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
+
+        let playerSpriteBottom = this.add.graphics();
+        playerSpriteBottom.fillStyle(0xffffff, 1.0);
+
+        this.playerSprites[i] = this.add.sprite((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + 90, this.game.renderer.height * 0.2 + 100, playerSkin).setDepth(2).setScale(3.2);
+
+        this.placeholders[i].setVisible(false);
+
+        playerSpriteBottom.setDepth(4);
+        playerSpriteBottom.fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + 31, this.game.renderer.height * 0.2 + 153, 120, 3.2)
+
+        this.playerSprites[i].anims.play(skin + '_idle' + (i + 1), true);
     }
 
 }
