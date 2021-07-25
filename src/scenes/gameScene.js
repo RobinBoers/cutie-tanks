@@ -354,8 +354,8 @@ export class gameScene extends Phaser.Scene {
             // shooting bombs
             GAMEVARS.fireTimer[i]++;
             
-            // If the player presses A (Xbox controller), shoot ball
-            if (gamepad.buttons[7].value > 0.7) {   
+            // If the player presses A (Xbox controller) or right analog trigger, shoot ball
+            if (gamepad.buttons[0].value === 1 || gamepad.buttons[7].value > 0.7) {   
                 
                 if (GAMEVARS.fireTimer[i] < GAMEVARS.cooldown) continue;
 
