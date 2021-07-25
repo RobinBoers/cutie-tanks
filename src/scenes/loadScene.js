@@ -87,6 +87,6 @@ export class loadScene extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start(CST.SCENES.MENU, "Assest loaded.");
+        this.scene.start(CST.SCENES.MENU, [false]);
     }
 }

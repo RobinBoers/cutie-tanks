@@ -49,11 +49,11 @@ export class playerSelectScene extends Phaser.Scene {
         let placeholders = [];
         let joinedPlayersNum = 0;
 
-        // this.add.text(150, this.game.renderer.height * 0.1, 'Press down to join and change skin.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
+        // this.add.text(150, this.game.renderer.height * 0.1, 'Press down to join and change skin.', { font: '24px Courier', color: CST.UI.TEXTCOLOR });
 
         this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.1 + 20, 'press-down').setScale(2);
 
-        // this.add.text(100, 420, 'Choose a level. Press start when ready.', { font: '24px Courier', fill: CST.UI.TEXTCOLOR });
+        // this.add.text(100, 420, 'Choose a level. Press start when ready.', { font: '24px Courier', color: CST.UI.TEXTCOLOR });
 
         this.add.image(this.game.renderer.width / 2, 420 + 10, 'choose-level').setScale(2);
 
@@ -130,7 +130,7 @@ export class playerSelectScene extends Phaser.Scene {
                 }
 
                 let skin = this.skindex[this.currentSkin[pad.index]];
-                let playerSkin = skin + (pad.index + 1);
+                // let playerSkin = skin + (pad.index + 1);
 
                 players[pad.index] = skin;
 
@@ -150,7 +150,7 @@ export class playerSelectScene extends Phaser.Scene {
                 }
 
                 let skin = this.skindex[this.currentSkin[pad.index]];
-                let playerSkin = skin + (pad.index + 1);
+                // let playerSkin = skin + (pad.index + 1);
 
                 players[pad.index] = skin;
 
@@ -184,7 +184,7 @@ export class playerSelectScene extends Phaser.Scene {
 
                 boxShadow.fillRect((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30) + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4 - 20, 240).setDepth(0);
 
-                this.add.text((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30) + 37, this.game.renderer.height * 0.2 + 200, 'Player ' + (pad.index + 1), { font: '20px Courier', fill: '#fff' }).setDepth(2);
+                this.add.text((pad.index + 1) * 20 + pad.index * (this.game.renderer.width / 4 - 30) + 37, this.game.renderer.height * 0.2 + 200, 'Player ' + (pad.index + 1), { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
 
                 let playerSpriteBottom = this.add.graphics();
                 playerSpriteBottom.fillStyle(0xffffff, 1.0);
