@@ -31,6 +31,12 @@ export class loadScene extends Phaser.Scene {
         this.load.image('choose-mode', './assets/text/choose-mode.png');
         this.load.image('settings', './assets/text/settings.png');
 
+        this.load.image('single_match', './assets/modes/single_match.png');
+        this.load.image('freeplay', './assets/modes/freeplay.png');
+
+        this.load.image('single_match_sel', './assets/modes/single_match_selected.png');
+        this.load.image('freeplay_sel', './assets/modes/freeplay_selected.png');
+
         this.load.image('default_scene', './assets/levels/default_button.png');
         this.load.image('factory_scene', './assets/levels/factory_button.png');
         this.load.image('forest_scene', './assets/levels/forest_button.png');

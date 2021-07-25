@@ -94,13 +94,13 @@ export class modeScene extends Phaser.Scene {
     updateMode() {
         if(this.currentMode == 0) {
 
-            this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'forest_scene_sel').setScale(.25).setOrigin(0, 0)
-            this.add.image((this.game.renderer.width / 2) + 10, 200, 'factory_scene').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'single_match_sel').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2) + 10, 200, 'freeplay').setScale(.25).setOrigin(0, 0)
             
         } else {
 
-            this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'forest_scene').setScale(.25).setOrigin(0, 0)
-            this.add.image((this.game.renderer.width / 2) + 10, 200, 'factory_scene_sel').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'single_match').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2) + 10, 200, 'freeplay_sel').setScale(.25).setOrigin(0, 0)
 
         }
     }
