@@ -28,6 +28,7 @@ export class loadScene extends Phaser.Scene {
 
         this.load.image('press-down', './assets/text/press-down.png');
         this.load.image('choose-level', './assets/text/choose-level.png');
+        this.load.image('choose-mode', './assets/text/choose-level.png');
 
         this.load.image('default_scene', './assets/levels/default_button.png');
         this.load.image('factory_scene', './assets/levels/factory_button.png');

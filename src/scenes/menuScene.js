@@ -68,8 +68,8 @@ export class menuScene extends Phaser.Scene {
 
         })
 
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select."]);
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start(CST.SCENES.MODE, ["Open mode selection."]);
         })
 
     }

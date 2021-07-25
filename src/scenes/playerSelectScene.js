@@ -217,7 +217,7 @@ export class playerSelectScene extends Phaser.Scene {
                 joinedPlayers = [];
 
                 // Go back to main menu
-                this.scene.start(CST.SCENES.MENU, "Exit player select.");
+                this.scene.start(CST.SCENES.MODE, ["Back to mode select. Exit player select."]);
             }
 
             // When player 1 hits the start button

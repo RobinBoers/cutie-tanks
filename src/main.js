@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import { loadScene } from "./scenes/loadScene";
 import { menuScene } from "./scenes/menuScene";
 import { playerSelectScene } from "./scenes/playerSelectScene";
+import { modeScene } from    "./scenes/modeScene";
 import { gameScene } from "./scenes/gameScene";
 import { endScene } from "./scenes/endScene";
 
@@ -21,6 +22,7 @@ const config = {
         loadScene,
         menuScene,
         playerSelectScene,
+        modeScene,
         gameScene,
         endScene
     ],

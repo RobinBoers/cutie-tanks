@@ -14,14 +14,20 @@ export class gameScene extends Phaser.Scene {
     init(data) {
         GAMEVARS.tempPlayers = data[0];
         this.level = data[1];
+
+        // Custom settings
+        if(data[2]) {
+            let tempVars = data[2];
+            GAMEVARS.maxHealth = tempVars[0];
+            GAMEVARS.playerSpeed = tempVars[1];
+            GAMEVARS.speedLimit = tempVars[2];
+            GAMEVARS.knockback = tempVars[3];
+            GAMEVARS.jumpSpeed = tempVars[4];
+            GAMEVARS.cooldown = tempVars[5];
+        }
     }
 
     create() {
-
-        // Speed limit
-        var speedLimit = 2000;
-        var knockback = 70;
-        var maxHealth = 1;
 
         GAMEVARS.playersGroup = this.physics.add.group();
         GAMEVARS.platforms = this.physics.add.staticGroup();
@@ -101,9 +107,9 @@ export class gameScene extends Phaser.Scene {
 
             // Knockback
             if (bomb.x > player.x) {
-                player.x = player.x - knockback;
+                player.x = player.x - GAMEVARS.knockback;
             } else if (bomb.x < player.x) {
-                player.x = player.x + knockback;
+                player.x = player.x + GAMEVARS.knockback;
             }
 
             // Play sound
@@ -135,10 +141,10 @@ export class gameScene extends Phaser.Scene {
 
             GAMEVARS.playerSkins[i] = GAMEVARS.tempPlayers[i];
         
-            GAMEVARS.players[i].body.maxSpeed = speedLimit;
+            GAMEVARS.players[i].body.maxSpeed = GAMEVARS.speedLimit;
             GAMEVARS.players[i].name = i;
 
-            GAMEVARS.playerHealth[i] = maxHealth; // 10
+            GAMEVARS.playerHealth[i] = GAMEVARS.maxHealth; // 10
 
             var color = CST.UI.CARDCOLOR;
             var offset = 2;
@@ -334,7 +340,7 @@ export class gameScene extends Phaser.Scene {
             // If the player presses A (Xbox controller), shoot ball
             if (gamepad.buttons[7].value > 0.7) {   
                 
-                if (GAMEVARS.fireTimer[i] < 20) continue;
+                if (GAMEVARS.fireTimer[i] < GAMEVARS.cooldown) continue;
 
                 GAMEVARS.fireTimer[i] = 0;
 
