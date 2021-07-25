@@ -75,7 +75,7 @@ export class modeScene extends Phaser.Scene {
 
                 this.sound.play('btn_hover');
 
-                if(this.currentMode < 2) {
+                if(this.currentMode < 1) {
                     this.currentMode += 1
                 }
 
