@@ -45,7 +45,7 @@ export class gameScene extends Phaser.Scene {
 
         if (this.level == "factory") {
             this.add.image(400, 350, 'factory_bg').setScale(4);
-            GAMEVARS.belts.create(50, 200, 'belt').anims.play('belt_run');;
+            GAMEVARS.belts.create(50, 200, 'belt').anims.play('belt_run');
             GAMEVARS.platforms.create(800, 500, 'pipe');
             GAMEVARS.platforms.create(60, 500, 'pipe');
             GAMEVARS.belts.create(800, 600, 'belt').anims.play('belt_run');
@@ -250,11 +250,11 @@ export class gameScene extends Phaser.Scene {
 
                 GAMEVARS.players = [];
                 GAMEVARS.deadPlayers = [];
-                GAMEVARS.platforms = "";
+                GAMEVARS.platforms = {};
                 GAMEVARS.cursors = "";
                 GAMEVARS.playerHealth = [];
                 GAMEVARS.deadPlayers = [];
-                GAMEVARS.deadPlayerCount = [];
+                GAMEVARS.deadPlayerCount = 0;
 
 
                 this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
@@ -305,8 +305,8 @@ export class gameScene extends Phaser.Scene {
             // Movement only
             if (gamepad.axes.length >= 2)
             {
-                var axisH = gamepad.axes[0].getValue();
-                var axisV = gamepad.axes[1].getValue();
+                let axisH = gamepad.axes[0].getValue();
+                let axisV = gamepad.axes[1].getValue();
 
                 if (axisH !== 0) {
                     GAMEVARS.players[i].setVelocityX(axisH * GAMEVARS.playerSpeed);
@@ -324,8 +324,7 @@ export class gameScene extends Phaser.Scene {
             // Aim only
             if (gamepad.axes.length >= 3)
             {
-                var axisH = gamepad.axes[2].getValue();
-                var axisV = gamepad.axes[3].getValue();
+                let axisH = gamepad.axes[2].getValue();
 
                 // console.log(axisH);
 
@@ -347,7 +346,7 @@ export class gameScene extends Phaser.Scene {
                 if (GAMEVARS.players[i].flipX == true) {
                     // var bomb = GAMEVARS.bombs.create(GAMEVARS.players[i].x - 45, GAMEVARS.players[i].y - 5, 'bomb');
 
-                    var bomb = GAMEVARS.bombs.create(GAMEVARS.players[i].x - 45, GAMEVARS.players[i].y - 5, 'bomb');
+                    let bomb = GAMEVARS.bombs.create(GAMEVARS.players[i].x - 45, GAMEVARS.players[i].y - 5, 'bomb');
                     // var bomb = GAMEVARS.bombs.get(GAMEVARS.players[i].x - 45, GAMEVARS.players[i].y - 5);
 
                     if (!bomb) return;
@@ -361,7 +360,7 @@ export class gameScene extends Phaser.Scene {
                     // bomb.setCollideWorldBounds(true);
                 }
                 else {
-                    var bomb = GAMEVARS.bombs.create(GAMEVARS.players[i].x + 45, GAMEVARS.players[i].y - 5, 'bomb');
+                    let bomb = GAMEVARS.bombs.create(GAMEVARS.players[i].x + 45, GAMEVARS.players[i].y - 5, 'bomb');
 
                     if (!bomb) return;
 
@@ -384,14 +383,14 @@ export class gameScene extends Phaser.Scene {
         GAMEVARS.deadPlayerCount = 0;
 
         // Count dead players
-        for (var i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
+        for (let i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
             if (GAMEVARS.deadPlayers[i] === true) GAMEVARS.deadPlayerCount += 1;
         }
 
         if (GAMEVARS.deadPlayerCount == GAMEVARS.players.length - 1 && GAMEVARS.deadPlayerCount !== 0) {
             console.log("Only one player is still alive. Searching for winner.");
 
-            for (var i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
+            for (let i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
                 if (GAMEVARS.deadPlayers[i] !== true) {
                     console.log("Found winner.");
 
@@ -403,7 +402,7 @@ export class gameScene extends Phaser.Scene {
 
                     GAMEVARS.players = [];
                     GAMEVARS.deadPlayers = [];
-                    GAMEVARS.platforms = "";
+                    GAMEVARS.platforms = {};
                     GAMEVARS.cursors = "";
                     GAMEVARS.playerHealth = [];
                     GAMEVARS.deadPlayers = [];

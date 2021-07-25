@@ -72,7 +72,7 @@ export class endScene extends Phaser.Scene {
         playerBox.fillRect(this.game.renderer.width / 2.57 - 20, this.game.renderer.height * 0.2, this.game.renderer.width / 4, 250).setDepth(1);
         boxShadow.fillRect(this.game.renderer.width / 2.57 - 20 + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4, 250).setDepth(0);
 
-        this.add.text(this.game.renderer.width / 2.57 - 20 + 55, this.game.renderer.height * 0.2 + 210, 'WINNER!', { font: '20px Courier', fill: '#ffffff' }).setDepth(2);
+        this.add.text(this.game.renderer.width / 2.57 - 20 + 55, this.game.renderer.height * 0.2 + 210, 'WINNER!', { font: '20px Courier', fill: CST.UI.TEXTCOLOR }).setDepth(2);
 
         let playerSpriteBottom = this.add.graphics();
         playerSpriteBottom.fillStyle(0xffffff, 1.0);
@@ -108,7 +108,7 @@ export class endScene extends Phaser.Scene {
 
         })
 
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select.", this.oldSkins, this.level]);
         })
 
