@@ -125,35 +125,58 @@ export class settingsScene extends Phaser.Scene {
             if(gamepad) {
 
                 if(gamepad.axes.length >= 2) {
-                    // Select option
-                    let axisV = gamepad.axes[1].getValue();
-                    if (axisV < -0.8 && this.fireTimer > this.fireDelay) {
-                        this.fireTimer = 0;
-                        this.sound.play('btn_hover');
-                        if(this.currentOption > 0) this.currentOption -= 1;
-                        this.updateOptions();
-                    } // up
-                    if (axisV > 0.8 && this.fireTimer > this.fireDelay) {
-                        this.fireTimer = 0;
-                        this.sound.play('btn_hover');
-                        if(this.currentOption < this.options.length - 1) this.currentOption += 1;
-                        this.updateOptions();
-                    } // down
-    
-                    // Change option
+
                     let axisH = gamepad.axes[0].getValue();
+    
+                    // Change option (to left)
                     if (axisH < -0.8) {
+
                         this.fireTimer = 0;
                         this.sound.play('btn_hover');
+                        
                         if(this.options[this.currentOption] > 1) this.options[this.currentOption] -= 1;
                         this.updateOptions();
-                    } // left
+
+                    }
+
+                    // Change option (to right)
                     if (axisH > 0.8) {
+
                         this.fireTimer = 0;
                         this.sound.play('btn_hover');
+
                         this.options[this.currentOption] += 1;
                         this.updateOptions();   
-                    } // right
+
+                    }
+
+                    if(this.fireTimer > this.fireDelay) {
+
+                        // Select option (down)
+                        let axisV = gamepad.axes[1].getValue();
+                        
+                        if (axisV > 0.8) {
+
+                            this.fireTimer = 0;
+                            this.sound.play('btn_hover');
+
+                            if(this.currentOption < this.options.length - 1) this.currentOption += 1;
+                            this.updateOptions();
+
+                        }
+
+                        // Select option (up)
+                        if (axisV < -0.8) {
+
+                            this.fireTimer = 0;
+                            this.sound.play('btn_hover');
+
+                            if(this.currentOption > 0) this.currentOption -= 1;
+                            this.updateOptions();
+
+                        }
+                    }
+
                 }
             }        
         }
