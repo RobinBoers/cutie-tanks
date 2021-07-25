@@ -39,6 +39,9 @@ export class settingsScene extends Phaser.Scene {
     // - jump speed
     // - cooldown
 
+    fireDelay = 10;
+    fireTimer = this.fireDelay;
+
     create() {
 
         this.cameras.main.fadeIn(CST.UI.FADEDURATION, 0, 0, 0)
@@ -87,21 +90,21 @@ export class settingsScene extends Phaser.Scene {
             // Select option (up)
             if(button.index == 12) {
                 this.sound.play('btn_hover');
-                if(this.currentOption > 1) this.currentOption -= 1;
+                if(this.currentOption > 0) this.currentOption -= 1;
                 this.updateOptions();
             }
 
             // Select option (down)
             if(button.index == 13) {
                 this.sound.play('btn_hover');
-                if(this.currentOption < this.options.length) this.currentOption += 1;
+                if(this.currentOption < this.options.length - 1) this.currentOption += 1;
                 this.updateOptions();
             }
 
             // Change option (to left)
             if(button.index == 14) {
                 this.sound.play('btn_hover');
-                if(this.options[this.currentOption] > 0) this.options[this.currentOption] -= 1;
+                if(this.options[this.currentOption] > 1) this.options[this.currentOption] -= 1;
                 this.updateOptions();
             }
 
@@ -119,6 +122,47 @@ export class settingsScene extends Phaser.Scene {
 
     update() {
         this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
+        this.fireTimer += 1;
+
+        for(let i = 0;i < 5;i++) {
+
+            let gamepad = this.input.gamepad.gamepads[i];
+
+            if(gamepad) {
+
+                if(gamepad.axes.length >= 2) {
+                    // Select option
+                    let axisV = gamepad.axes[1].getValue();
+                    if (axisV < -0.8 && this.fireTimer > this.fireDelay) {
+                        this.fireTimer = 0;
+                        this.sound.play('btn_hover');
+                        if(this.currentOption > 0) this.currentOption -= 1;
+                        this.updateOptions();
+                    } // up
+                    if (axisV > 0.8 && this.fireTimer > this.fireDelay) {
+                        this.fireTimer = 0;
+                        this.sound.play('btn_hover');
+                        if(this.currentOption < this.options.length - 1) this.currentOption += 1;
+                        this.updateOptions();
+                    } // down
+    
+                    // Change option
+                    let axisH = gamepad.axes[0].getValue();
+                    if (axisH < -0.8) {
+                        this.fireTimer = 0;
+                        this.sound.play('btn_hover');
+                        if(this.options[this.currentOption] > 1) this.options[this.currentOption] -= 1;
+                        this.updateOptions();
+                    } // left
+                    if (axisH > 0.8) {
+                        this.fireTimer = 0;
+                        this.sound.play('btn_hover');
+                        this.options[this.currentOption] += 1;
+                        this.updateOptions();   
+                    } // right
+                }
+            }        
+        }
     }
 
     updateOptions() {

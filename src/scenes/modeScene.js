@@ -9,6 +9,8 @@ export class modeScene extends Phaser.Scene {
     }
 
     currentMode = 0;
+    fireDelay = 10;
+    fireTimer = this.fireDelay;
 
     init(data) {
         console.log(data[0]);
@@ -89,6 +91,48 @@ export class modeScene extends Phaser.Scene {
 
     update() {
         this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
+
+        this.fireTimer += 1;
+
+        for(let i = 0;i < 5;i++) {
+
+            let gamepad = this.input.gamepad.gamepads[i];
+
+            if(gamepad) {
+
+                if(gamepad.axes.length >= 2) {
+    
+                    // Change mode
+                    let axisH = gamepad.axes[0].getValue();
+                    if (axisH < -0.8 && this.fireTimer > this.fireDelay) {
+
+                        this.fireTimer = 0;
+
+                        this.sound.play('btn_hover');
+
+                        if(this.currentMode > 0) {
+                            this.currentMode -= 1
+                        }
+
+                        this.updateMode();
+
+                    } // left
+                    if (axisH > 0.8 && this.fireTimer > this.fireDelay) {
+
+                        this.fireTimer = 0;
+
+                        this.sound.play('btn_hover');
+
+                        if(this.currentMode < 1) {
+                            this.currentMode += 1
+                        }
+
+                        this.updateMode();  
+
+                    } // right
+                }
+            }        
+        }
     }
 
     updateMode() {

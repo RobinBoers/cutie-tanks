@@ -95,7 +95,7 @@ export class endScene extends Phaser.Scene {
 
         this.input.gamepad.on("down", (pad, button) => {
 
-            if (button.index === 9) {
+            if (button.index === 9 || button.index == 0) {
 
                 this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
                 // this.sound.play('btn_hover');

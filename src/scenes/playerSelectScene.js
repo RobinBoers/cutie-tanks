@@ -15,6 +15,9 @@ export class playerSelectScene extends Phaser.Scene {
     playerSprites = [];
     customSettings = false;
 
+    fireDelay = 10;
+    fireTimer = this.fireDelay;
+
     init(data) {
         console.log(data[0]);
 
@@ -299,6 +302,48 @@ export class playerSelectScene extends Phaser.Scene {
 
     update() {
         this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
+
+        this.fireTimer += 1;
+
+        for(let i = 0;i < 5;i++) {
+
+            let gamepad = this.input.gamepad.gamepads[i];
+
+            if(gamepad) {
+
+                if(gamepad.axes.length >= 2) {
+    
+                    // Change selected level
+                    let axisH = gamepad.axes[0].getValue();
+                    if (axisH < -0.8 && this.fireTimer > this.fireDelay) {
+
+                        this.fireTimer = 0;
+
+                        this.sound.play('btn_hover');
+
+                        if(this.currentLevel > 0) {
+                            this.currentLevel -= 1;
+                        }
+
+                        this.refreshLevels();
+
+                    } // left
+                    if (axisH > 0.8 && this.fireTimer > this.fireDelay) {
+
+                        this.fireTimer = 0;
+
+                        this.sound.play('btn_hover')
+
+                        if(this.currentLevel < 2) {
+                            this.currentLevel += 1;
+                        }
+        
+                        this.refreshLevels();
+
+                    } // right
+                }
+            }        
+        }
     }
 
     refreshLevels() {
