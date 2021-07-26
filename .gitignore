@@ -6,3 +6,6 @@
 /src/old/*
 /versions/*
 /.parcel-cache
+/pkg/pkg
+/pkg/src
+/pkg/cutie-tanks-*.pkg.tar.zst
