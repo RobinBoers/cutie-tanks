@@ -21,12 +21,14 @@ export class playerSelectScene extends Phaser.Scene {
     init(data) {
         console.log(data[0]);
 
+        // Load skins from the previous round
         if(data[1]) {
             for(var i = 0;i<data[1].length;i++) {
                 if(data[1][i] && data[1][i] !== null && data[1][i] !== undefined) this.currentSkin[i] = this.skindex.indexOf(data[1][i]);
             }
         }
 
+        // Load level from the previous round
         if(data[2]) {
             this.level = data[2];
             
@@ -39,6 +41,8 @@ export class playerSelectScene extends Phaser.Scene {
             }
         }
 
+        // Load custom settings for
+        // Freeplay Mode
         if(data[3]) {
             this.customSettings = true;
             this.options = data[3];
@@ -68,8 +72,10 @@ export class playerSelectScene extends Phaser.Scene {
 
         this.refreshLevels();
         
-        // placeholder boxes
-
+        // Placeholder boxes
+        // These are the things with the button
+        // down you see if a player hasnt 
+        // joined yet
         for (var i = 0; i < 4; i++) {
             let playerBox = this.add.graphics();
             playerBox.fillStyle(CST.UI.CARDCOLOR, 1.0);
@@ -86,6 +92,7 @@ export class playerSelectScene extends Phaser.Scene {
             this.placeholders[i] = this.add.image((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + 90, this.game.renderer.height * 0.2 + 100, 'join_btn').setDepth(2).setScale(3.2);
         }
 
+        // Create animations
         for (var x = 1; x < 5; x++) {
 
             let skins = CST.SKINS;
@@ -118,16 +125,17 @@ export class playerSelectScene extends Phaser.Scene {
             }
         }
 
-        // Spawn a new player when a controller connects
+        // Show debug message if a controller connects
         this.input.gamepad.on('connected', function (pad) {
             
             console.log('Connected', pad.id + '.');
 
         }, this);
 
+        // Check for buttons down
         this.input.gamepad.on("down", (pad, button) => {
 
-            // Change skin
+            // Change skin (down)
             if (button.index === 13 && this.joinedPlayers[pad.index] === true) {
 
                 this.sound.play('btn_hover');
@@ -147,7 +155,7 @@ export class playerSelectScene extends Phaser.Scene {
 
             }
 
-            // Change skin
+            // Change skin (up)
             if (button.index === 12 && this.joinedPlayers[pad.index] === true) {
 
                 this.sound.play('btn_hover');
@@ -211,6 +219,7 @@ export class playerSelectScene extends Phaser.Scene {
 
                 // Reset joined players for next time
                 this.joinedPlayers = [];
+                this.joinedPlayersNum = 0;
 
                 // Play sound
                 this.sound.play('btn_click');
