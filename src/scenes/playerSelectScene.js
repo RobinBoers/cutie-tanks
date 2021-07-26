@@ -175,7 +175,7 @@ export class playerSelectScene extends Phaser.Scene {
             }
 
             // if (pad.index == 0) {
-            // When player1 hits the back button
+            // When player1 hits the back button (or B)
             if (button.index === 8 || button.index == 1) {
 
                 // Stop title screen music (otherwise it will play twice)
@@ -194,7 +194,7 @@ export class playerSelectScene extends Phaser.Scene {
                 this.scene.start(CST.SCENES.MODE, ["Back to mode select. Exit player select."]);
             }
 
-            // When player 1 hits the start button
+            // When player 1 hits the start button (or A)
             if ((button.index === 9 || button.index == 0) && this.joinedPlayersNum > 1) {
 
                 // Stop music
@@ -252,10 +252,13 @@ export class playerSelectScene extends Phaser.Scene {
             if(button.index == 3) {
                 this.sound.play('btn_hover');
 
-                let maxLevels = 2;
+                // How many levels there are to pick from
+                let maxLevels = 3;
 
-                this.currentLevel = Math.floor(Math.random() * (maxLevels - 0 + 1) + 0);
+                // Pick random level
+                this.currentLevel = Math.floor(Math.random() * ((maxLevels - 1) - 0 + 1) + 0);
 
+                // Set level based on currentLevel
                 if(this.currentLevel == 0) {
                     this.level = "city"
                 } else if(this.currentLevel == 1) {
@@ -264,6 +267,7 @@ export class playerSelectScene extends Phaser.Scene {
                     this.level = "factory"
                 }
 
+                // Hide which level is selected
                 this.add.image(95, 460, 'city_scene').setScale(.15).setOrigin(0, 0)
                 this.add.image(105 + 1 * (this.game.renderer.width / 4), 460, 'forest_scene').setScale(.15).setOrigin(0, 0)
                 this.add.image(115 + 2 * (this.game.renderer.width / 4), 460, 'factory_scene').setScale(.15).setOrigin(0, 0)
@@ -275,20 +279,30 @@ export class playerSelectScene extends Phaser.Scene {
     }
 
     update() {
+        // Update background
         this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
 
+        // fireTimer is a delay for the controller input
+        // bacause it will otherwise select stuff on warp speed
         this.fireTimer += 1;
 
+        // Cycle trough all connected gamepads (max 4)
         for(let i = 0;i < 5;i++) {
 
+            // Get current gamepad
             let gamepad = this.input.gamepad.gamepads[i];
 
+            // If the gamepad exists,
+            // detect input
             if(gamepad) {
 
+                // Only if the controller has analog input
                 if(gamepad.axes.length >= 2) {
     
-                    // Change selected level
+                    // Value of horizontal axes
                     let axisH = gamepad.axes[0].getValue();
+
+                    // Change selected level
                     if (axisH < -0.8 && this.fireTimer > this.fireDelay) {
 
                         this.fireTimer = 0;
@@ -316,9 +330,10 @@ export class playerSelectScene extends Phaser.Scene {
 
                     } // right
 
-                    // Select skin (down)
+                    // Value of vertical axes
                     let axisV = gamepad.axes[1].getValue();
                         
+                    // Select skin (down)
                     if (axisV > 0.8 && this.fireTimer > this.fireDelay && this.joinedPlayers[i] === true) {
 
                         this.fireTimer = 0;
@@ -372,6 +387,8 @@ export class playerSelectScene extends Phaser.Scene {
         }
     }
 
+    // Function to update images of the levels
+    // and hightlight the one currently selected
     refreshLevels() {
         if(this.currentLevel == 0) {
             // this.add.image(80, 460, 'default_scene_sel').setScale(.15).setOrigin(0, 0)
@@ -397,22 +414,33 @@ export class playerSelectScene extends Phaser.Scene {
         }
     }
 
+    // Function that runs when a
+    // player joins the game
+    // (i is the id of the gamepad the player is using)
     joinPlayer(i) {
 
+        // Increase count of joinedPlayers
         this.joinedPlayersNum += 1;
 
+        // Give the player a skin
         let skin = this.skindex[this.currentSkin[i]];
         let playerSkin = skin + (i + 1);
 
+        // Add skins to players array
         this.players[i] = skin;
 
+        // Save that the player with this id is joined
+        // by adding it to an array
         this.joinedPlayers[i] = true;
 
+        // Play sound
         this.sound.play('btn_hover');
 
+        // Add box
         let playerBox = this.add.graphics();
         playerBox.fillStyle(CST.UI.CARDCOLOR, 1.0);
 
+        // Boxschadow
         let boxShadow = this.add.graphics();
         boxShadow.fillStyle(0x000000, 1.0);
 
@@ -422,18 +450,25 @@ export class playerSelectScene extends Phaser.Scene {
 
         boxShadow.fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4 - 20, 240).setDepth(0);
 
+        // Add text (Player + player num)
         this.add.text((i + 1) * 20 +i * (this.game.renderer.width / 4 - 30) + 37, this.game.renderer.height * 0.2 + 200, 'Player ' + (i + 1), { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
 
+        // Add little line at the bottom, because
+        // the skins itself dont have a bottom
         let playerSpriteBottom = this.add.graphics();
         playerSpriteBottom.fillStyle(0xffffff, 1.0);
 
+        // Add skins itself
         this.playerSprites[i] = this.add.sprite((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + 90, this.game.renderer.height * 0.2 + 100, playerSkin).setDepth(2).setScale(3.2);
 
+        // Remove placeholder image (with the button down)
         this.placeholders[i].setVisible(false);
 
+        // Add the line itself and move it to the foreground
         playerSpriteBottom.setDepth(4);
         playerSpriteBottom.fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + 31, this.game.renderer.height * 0.2 + 153, 120, 3.2)
 
+        // Play animation
         this.playerSprites[i].anims.play(skin + '_idle' + (i + 1), true);
     }
 

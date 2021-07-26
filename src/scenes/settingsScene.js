@@ -40,16 +40,21 @@ export class settingsScene extends Phaser.Scene {
 
     create() {
 
+        // Cool fade-in effect
         this.cameras.main.fadeIn(CST.UI.FADEDURATION, 0, 0, 0)
 
+        // Add background to scene
         this.background = this.add.tileSprite(0, 0, 3200, 600, 'title_bg').setOrigin(0);
 
+        // Add title at the top of the screen
         this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.1 + 20, 'settings').setScale(2);
 
+        // Spawn text for the options itself
         for(let i = 0;i<this.options.length;i++) {
-            this.optionText[i] = this.add.text(200, this.game.renderer.height * 0.1*i + 165, this.optionNames[i] + ": " + this.options[i], { font: '24px Courier', color: CST.UI.TEXTCOLOR });
+            this.optionText[i] = this.add.text(200, this.game.renderer.height * 0.1*i + 150, this.optionNames[i] + ": " + this.options[i], { font: '24px Courier', color: CST.UI.TEXTCOLOR });
         }
 
+        // Update options text for the first time
         this.updateOptions();
 
         this.input.gamepad.on("down", (pad, button) => {
@@ -134,17 +139,27 @@ export class settingsScene extends Phaser.Scene {
     }
 
     update() {
+        // Update background
         this.background.tilePositionX += CST.UI.BACKGROUNDSPEED;
+
+        // fireTimer is a delay for the controller input
+        // bacause it will otherwise select stuff on warp speed
         this.fireTimer += 1;
 
+        // Cycle trough all connected gamepads (max 4)
         for(let i = 0;i < 5;i++) {
 
+            // Get current gamepad
             let gamepad = this.input.gamepad.gamepads[i];
 
+            // If the gamepad exists,
+            // detect input
             if(gamepad) {
 
+                // Only if the controller has analog input
                 if(gamepad.axes.length >= 2) {
 
+                    // Value of horizontal axes
                     let axisH = gamepad.axes[0].getValue();
     
                     // Change option (to left)
@@ -189,9 +204,10 @@ export class settingsScene extends Phaser.Scene {
 
                     if(this.fireTimer > this.fireDelay) {
 
-                        // Select option (down)
+                        // Value of the vertical axes
                         let axisV = gamepad.axes[1].getValue();
                         
+                        // Select option (down)
                         if (axisV > 0.8) {
 
                             this.fireTimer = 0;
@@ -220,9 +236,13 @@ export class settingsScene extends Phaser.Scene {
     }
 
     updateOptions() {
+        // Cycle trough all options
         for(let i = 0;i<this.options.length;i++) {
+            // Update text with current value
             this.optionText[i].text = this.optionNames[i] + ": " + this.options[i];
 
+            // If selected, make the text bigger,
+            // otherwise, return to default size
             if(i == this.currentOption) {
                 this.optionText[i].setScale(1.5);
             } else {

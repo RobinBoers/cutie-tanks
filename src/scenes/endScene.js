@@ -13,16 +13,18 @@ export class endScene extends Phaser.Scene {
     oldSkins = null
 
     init(data) {
-        this.winner = data[0];
-        this.skin = data[1];
-        this.oldSkins = data[2];
-        this.level = data[3];
+        this.winner = data[0]; //
+        this.skin = data[1]; // skin the winner used
+        this.oldSkins = data[2]; // skins prev selected, remembered for the next round
+        this.level = data[3]; // level prev selected, remembered for the next round
     }
 
     create() {
 
+        // Cool fade-in effect
         this.cameras.main.fadeIn(CST.UI.FADEDURATION, 0, 0, 0)
 
+        // Create animations
         for (var x = 1; x < 5; x++) {
 
             let skins = CST.SKINS;
@@ -55,15 +57,18 @@ export class endScene extends Phaser.Scene {
             }
         }
 
+        // Add background
         this.add.image(0, 0, 'title_bg_still').setOrigin(0).setDepth(0).setScale(CST.UI.BACKGROUNDSCALE);
 
         // this.background = this.add.tileSprite(0, 0, 3200, 600, 'title_bg').setOrigin(0);
 
         // this.add.text(20, this.game.renderer.height * 0.1, `Player ${this.winner} has won!`, { font: '30px Courier', fill: '#000' });
         
+        // Add box
         let playerBox = this.add.graphics();
         playerBox.fillStyle(CST.UI.CARDCOLOR, 1.0);
 
+        // Boxshadow
         let boxShadow = this.add.graphics();
         boxShadow.fillStyle(0x000000, 1.0);
 
@@ -72,20 +77,28 @@ export class endScene extends Phaser.Scene {
         playerBox.fillRect(this.game.renderer.width / 2.57 - 20, this.game.renderer.height * 0.2, this.game.renderer.width / 4, 250).setDepth(1);
         boxShadow.fillRect(this.game.renderer.width / 2.57 - 20 + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4, 250).setDepth(0);
 
+        // Add text (WINNER!)
         this.add.text(this.game.renderer.width / 2.57 - 20 + 55, this.game.renderer.height * 0.2 + 210, 'WINNER!', { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
 
+        // Another line, because the sprite itself doesnt
+        // have a bottom
         let playerSpriteBottom = this.add.graphics();
         playerSpriteBottom.fillStyle(0xffffff, 1.0);
 
+        // Add sprite
         let player = this.add.sprite(this.game.renderer.width / 2.57 - 20 + 100, this.game.renderer.height * 0.2 + 110, this.skin).setDepth(2).setScale(3.2);
         
+        // Play animation
         player.anims.play(this.skin, true);
 
+        // Add the line at the bottom
         playerSpriteBottom.setDepth(4);
         playerSpriteBottom.fillRect(this.game.renderer.width / 2.57 - 20 + 41, this.game.renderer.height * 0.2 + 163, 120, 3.2)
 
+        // Text at the bottom
         this.add.text(this.game.renderer.width / 2.57, this.game.renderer.height * 0.8, 'Press start', { font: '24px Courier', color: CST.UI.TEXTCOLOR });
 
+        // Music (not used)
         this.sound.pauseOnBlur = false;
         // let titleMusic = this.sound.add('title_music', {
         //     loop: true
@@ -95,22 +108,16 @@ export class endScene extends Phaser.Scene {
 
         this.input.gamepad.on("down", (pad, button) => {
 
-            if (button.index === 9 || button.index == 0) {
+            // If the player clicks start, A or B,
+            // go back to menu (and that will redirect to player select)
+            if (button.index === 9 || button.index == 0 || button.index == 1) {
 
-                this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
-                // this.sound.play('btn_hover');
-
-                // setTimeout(200, () => {
                 this.sound.play('btn_click');
-                // })
+                this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select.", this.oldSkins, this.level]);
 
             }
 
-        })
-
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select.", this.oldSkins, this.level]);
-        })
+        });
 
     }
 }
