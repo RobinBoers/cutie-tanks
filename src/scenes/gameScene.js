@@ -322,6 +322,7 @@ export class gameScene extends Phaser.Scene {
                 GAMEVARS.playerHealth = [];
                 GAMEVARS.deadPlayers = [];
                 GAMEVARS.deadPlayerCount = 0;
+                this.playerCount = 0;
 
                 this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
 
@@ -499,6 +500,7 @@ export class gameScene extends Phaser.Scene {
                     GAMEVARS.playerHealth = [];
                     GAMEVARS.deadPlayers = [];
                     GAMEVARS.deadPlayerCount = 0;
+                    this.playerCount = 0;
 
                     // Open endScene
                     this.scene.start(CST.SCENES.MENU, [true, i+1, skin, GAMEVARS.playerSkins, this.level]);
