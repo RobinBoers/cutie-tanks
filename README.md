@@ -8,6 +8,19 @@ A player can only take 10 damage before dying. The last one standing wins. Match
 
 Also, there are skins. To join a game press down on the player select screen, and then use down to select a skin.
 
+## Installation
+
+The game can be installed on Linux trough [Lutris](https://lutris.net/) and there is also an AUR package available for Arch Linux.
+
+[Download using Lutris](https://lutris.net/games/cutietanks/)
+
+The [AUR package](https://aur.archlinux.org/packages/cutie-tanks/) can be installed using an AUR helper like `yay` or `paru`:
+
+
+```
+yay -S cutie-tanks
+```
+
 ## Development
 
 Make sure you have parcel and nodejs installed:
