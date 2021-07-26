@@ -32,6 +32,8 @@ export class gameScene extends Phaser.Scene {
         }
     }
 
+    playerCount = 0;
+
     create() {
 
         // Create groups for collisions and overlap stuff
@@ -180,6 +182,8 @@ export class gameScene extends Phaser.Scene {
 
             // If the player didnt join, continue to the next one
             if(GAMEVARS.tempPlayers[i] === null || GAMEVARS.tempPlayers[i] === undefined) continue;
+
+            this.playerCount += 1;
             
             // Create player at random location with scale 1.4 and bounce 0.2
             GAMEVARS.players[i] = GAMEVARS.playersGroup.create(Phaser.Math.Between(200, 600), Phaser.Math.Between(100, 500), GAMEVARS.tempPlayers[i]+(i+1)).setBounce(0.2).setScale(1.4);
@@ -470,7 +474,7 @@ export class gameScene extends Phaser.Scene {
         }
 
         // Detect if only one player is alive
-        if (GAMEVARS.deadPlayerCount == GAMEVARS.players.length - 1 && GAMEVARS.deadPlayerCount !== 0) {
+        if (GAMEVARS.deadPlayerCount >= this.playerCount - 1 && GAMEVARS.deadPlayerCount !== 0) {
             console.log("Only one player is still alive. Searching for winner.");
 
             // Cycle trough all players
