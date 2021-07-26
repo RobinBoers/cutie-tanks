@@ -35,6 +35,10 @@ The game uses Phaser 3 Scenes for the different "states" the game can be in. The
 for loading all the assets
 - **Main menu:**  
 to connect controllers and display the logo
+- **Mode select**:  
+to select a game mode
+- **Settings**:  
+to configure settings for Freeplay Mode
 - **Player select:**  
 to join the game and select a skin
 - **In-Game:**  
@@ -42,7 +46,17 @@ to play the game
 - **Winner:**  
 shows the winner (the last one standing)
 
-Run `npm start` to test. Run `npm build` to package for production.
+To test the game:
+
+```
+npm start
+```
+
+To package for production:
+
+```
+npm run build
+```
 
 ## Controls
 The game is designed with a xbox controller in mind, but any controller should work. To move use the left analog stick. To aim use the right analog stick. To shoot use the analog right trigger.
