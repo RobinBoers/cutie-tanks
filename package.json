@@ -3,8 +3,8 @@
 	"version": "1.4",
 	"description": "",
 	"scripts": {
-		"start": "parcel src/index.html -p 8000",
-		"build": "parcel build src/index.html --out-dir dist",
+		"start": "parcel src/index.html -p 3000",
+		"build": "parcel build src/index.html --out-dir dist --public-url .",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Robin Boers",
