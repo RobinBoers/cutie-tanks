@@ -23,7 +23,7 @@ export class playerSelectScene extends Phaser.Scene {
 
         if(data[1]) {
             for(var i = 0;i<data[1].length;i++) {
-                this.currentSkin[i] = this.skindex.indexOf(data[1][i]);
+                if(data[1][i] && data[1][i] !== null && data[1][i] !== undefined) this.currentSkin[i] = this.skindex.indexOf(data[1][i]);
             }
         }
 

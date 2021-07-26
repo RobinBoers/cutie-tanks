@@ -334,6 +334,7 @@ export class gameScene extends Phaser.Scene {
             // If the players health is equal ar lower than 0,
             // add him to the dead players list
             if (GAMEVARS.playerHealth[i] <= 0) GAMEVARS.deadPlayers[i] = true;
+            else GAMEVARS.deadPlayers[i] = false;
 
             // If the player is dead, change sprite and continue
             if (GAMEVARS.deadPlayers[i] === true) {
@@ -478,12 +479,14 @@ export class gameScene extends Phaser.Scene {
         if (GAMEVARS.deadPlayerCount >= this.playerCount - 1 && GAMEVARS.deadPlayerCount !== 0) {
             console.log("Only one player is still alive. Searching for winner.");
 
+            console.log(GAMEVARS.deadPlayers);
+
             // Cycle trough all players
             for (let i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
 
                 // If the player is still alive, he is the winner
-                if (GAMEVARS.deadPlayers[i] !== true) {
-                    console.log("Found winner.");
+                if (GAMEVARS.deadPlayers[i] === false) {
+                    console.log("Found winner: "+(i+1));
 
                     // Get correct animation for
                     // the endScene
