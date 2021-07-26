@@ -381,8 +381,14 @@ export class gameScene extends Phaser.Scene {
                     GAMEVARS.players[i].anims.play(GAMEVARS.playerSkins[i]+'_ride' + tank, true);
                 }
 
-                // if (-axisH > 0) GAMEVARS.players[i].setFlipX(true);
-                // if (-axisH < 0) GAMEVARS.players[i].setFlipX(false);
+                // This weird hack is for my SNES controller.
+                // For some reason the d-pad is identified as analog stick by
+                // Phaser. I'm checking for the vendor and productid to identify this
+                // type of controller and fix the issue :)
+                if(gamepad.id.includes("0810") && gamepad.id.includes("e501")) {
+                    if (-axisH > 0) GAMEVARS.players[i].setFlipX(true);
+                    if (-axisH < 0) GAMEVARS.players[i].setFlipX(false);
+                }
 
                 // if(axisV < 0 && GAMEVARS.players[i].body.touching.down) GAMEVARS.players[i].setVelocityY(axisV * jumpSpeed);`
                 if (axisV < -0.5 && GAMEVARS.players[i].body.touching.down) GAMEVARS.players[i].body.velocity.y += -GAMEVARS.jumpSpeed;

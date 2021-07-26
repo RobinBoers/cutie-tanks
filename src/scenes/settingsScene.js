@@ -229,7 +229,6 @@ export class settingsScene extends Phaser.Scene {
 
                         }
                     }
-
                 }
             }        
         }
