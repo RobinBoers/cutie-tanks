@@ -13,8 +13,9 @@ optdepends=()
 provides=(cutie-tanks)
 source=('src::git+https://github.com/RobinBoers/cutie-tanks#branch=bin'
 		'cutie-tanks' 
-		'cutie-tanks.desktop')
-md5sums=('SKIP' 'SKIP' 'SKIP')
+		'cutie-tanks.desktop'
+		'icon.png')
+md5sums=('SKIP' 'SKIP' 'SKIP', 'SKIP')
 
 package() {
 	chmod +x "cutie-tanks"
@@ -26,4 +27,5 @@ package() {
 
 	cp ./cutie-tanks.desktop "$pkgdir/usr/share/applications/cutie-tanks.desktop"
 	cp ./cutie-tanks "$pkgdir/usr/bin/cutie-tanks"
+	cp ./icon.png "$pkgdir/opt/cutie-tanks/icon.png"
 }
