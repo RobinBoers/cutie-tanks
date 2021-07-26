@@ -200,10 +200,12 @@ export class playerSelectScene extends Phaser.Scene {
                 // Stop music
                 this.sound.stopAll();
 
-                // Remove players from the prev. round that didnt join this one.
+                // Remove players from the previous round
+                // that didnt join this one.
                 for(let i = 0;i<4;i++) {
-                    if(!this.joinedPlayers[i] && this.players[i]) {
-                        this.players.splice(i, 1);
+                    if(!this.joinedPlayers[i]) {
+                        // this.players.splice(i, 1);
+                        this.players[i] = null;
                     }
                 }
 
