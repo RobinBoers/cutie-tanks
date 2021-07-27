@@ -1,3 +1,5 @@
+// This file isnt used in the game itself, but for starting the game in an Electron wrapper
+// when installed in for example Lutris or via the AUR.
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 
