@@ -14,6 +14,7 @@ export class playerSelectScene extends Phaser.Scene {
     currentLevel = 0;
     playerSprites = [];
     customSettings = false;
+    teamsEnabled = false;
 
     fireDelay = 10;
     fireTimer = this.fireDelay;
@@ -46,6 +47,13 @@ export class playerSelectScene extends Phaser.Scene {
         if(data[3]) {
             this.customSettings = true;
             this.options = data[3];
+        }
+
+        // Check if TEAMS mode is enabled
+        if(data[4] === true) {
+            this.teamsEnabled = true;
+        } else {
+            this.teamsEnabled = false;
         }
     }
 
@@ -225,10 +233,18 @@ export class playerSelectScene extends Phaser.Scene {
                 this.sound.play('btn_click');
 
                 // Start game
-                if(this.customSettings == true) {
-                    this.scene.start(CST.SCENES.GAME, [this.players, this.level, this.options]);
+                if(this.teamsEnabled == true) {
+
+                    if(this.customSettings == true) {
+                        this.scene.start(CST.SCENES.TEAMS, [this.players, this.level, this.options]);
+                    } else this.scene.start(CST.SCENES.TEAMS, [this.players, this.level]);
+
                 } else {
-                    this.scene.start(CST.SCENES.GAME, [this.players, this.level]);
+                    
+                    if(this.customSettings == true) {
+                        this.scene.start(CST.SCENES.GAME, [this.players, this.level, this.options]);
+                    } else this.scene.start(CST.SCENES.GAME, [this.players, this.level]);
+                    
                 }
             }
 
@@ -460,7 +476,7 @@ export class playerSelectScene extends Phaser.Scene {
         boxShadow.fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4 - 20, 240).setDepth(0);
 
         // Add text (Player + player num)
-        this.add.text((i + 1) * 20 +i * (this.game.renderer.width / 4 - 30) + 37, this.game.renderer.height * 0.2 + 200, 'Player ' + (i + 1), { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
+        this.add.text((i + 1) * 20 +i * (this.game.renderer.width / 4 - 30) + 39, this.game.renderer.height * 0.2 + 200, 'Player ' + (i + 1), { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
 
         // Add little line at the bottom, because
         // the skins itself dont have a bottom

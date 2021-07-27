@@ -11,7 +11,7 @@ export class menuScene extends Phaser.Scene {
     init(data) {
         // If round ends, open winner screen
         if (data[0] === true) {
-            this.scene.start(CST.SCENES.END, [data[1], data[2], data[3], data[4]]);
+            this.scene.start(CST.SCENES.END, [data[1], data[2], data[3], data[4], data[5]]);
         }
     }
 

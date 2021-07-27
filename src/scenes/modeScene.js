@@ -57,8 +57,12 @@ export class modeScene extends Phaser.Scene {
 
                 // If mode is single match, open player select
                 if(this.currentMode == 0) this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select",false,false,GAMEVARS.defaultOptions]);
+
                 // If it is freeplay, open the freeplay settings
-                else this.scene.start(CST.SCENES.SETTINGS, ["Open settings menu."]);
+                else if(this.currentMode == 1) this.scene.start(CST.SCENES.SETTINGS, ["Open settings menu."]);
+
+                // If it is duos / teams, open player select (but with custom value)
+                else this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select",false,false,GAMEVARS.defaultOptions, true],);
             }
 
             // Change mode (to left)
@@ -78,7 +82,7 @@ export class modeScene extends Phaser.Scene {
 
                 this.sound.play('btn_hover');
 
-                if(this.currentMode < 1) {
+                if(this.currentMode < 2) {
                     this.currentMode += 1
                 }
 
@@ -124,7 +128,7 @@ export class modeScene extends Phaser.Scene {
 
                         this.sound.play('btn_hover');
 
-                        if(this.currentMode < 1) {
+                        if(this.currentMode < 2) {
                             this.currentMode += 1
                         }
 
@@ -141,11 +145,19 @@ export class modeScene extends Phaser.Scene {
 
             this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'single_match_sel').setScale(.25).setOrigin(0, 0)
             this.add.image((this.game.renderer.width / 2) + 10, 200, 'freeplay').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2), 450, 'duos').setScale(.25)
             
-        } else {
+        } else if(this.currentMode == 1) {
 
             this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'single_match').setScale(.25).setOrigin(0, 0)
             this.add.image((this.game.renderer.width / 2) + 10, 200, 'freeplay_sel').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2), 450, 'duos').setScale(.25)
+
+        } else {
+
+            this.add.image((this.game.renderer.width / 2) - 300 - 10, 200, 'single_match').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2) + 10, 200, 'freeplay').setScale(.25).setOrigin(0, 0)
+            this.add.image((this.game.renderer.width / 2), 450, 'duos_sel').setScale(.25)
 
         }
     }

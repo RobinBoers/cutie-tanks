@@ -10,6 +10,8 @@ export class gameScene extends Phaser.Scene {
     }
 
     level = "default";
+    teamdex = [];
+    teamsEnabled = false;
 
     init(data) {
 
@@ -20,7 +22,7 @@ export class gameScene extends Phaser.Scene {
 
         // Custom settings
         // (for Freeplay Mode)
-        if(data[2]) {
+        if(data[2] && data[2] !== null) {
             let tempVars = data[2];
             GAMEVARS.maxHealth = tempVars[0];
             GAMEVARS.playerSpeed = tempVars[1];
@@ -29,6 +31,14 @@ export class gameScene extends Phaser.Scene {
             GAMEVARS.jumpSpeed = tempVars[4];
             GAMEVARS.cooldown = tempVars[5];
             GAMEVARS.invulnerable = tempVars[6];
+        }
+
+        // Teams for Teams Mode 
+        if(data[3]) {
+            this.teamdex = data[4];
+            this.teamsEnabled = true;
+        } else {
+            this.teamsEnabled = false;
         }
     }
 
@@ -155,13 +165,13 @@ export class gameScene extends Phaser.Scene {
 
             // Color the healthbar
             // @ts-ignore
-            if(player.name == 0) color = 0x507ECE
+            if(player.name == 0) color = CST.UI.COLORS.PLAYER1
             // @ts-ignore
-            else if(player.name == 1) color = 0xD53F2B
+            else if(player.name == 1) color = CST.UI.COLORS.PLAYER2
             // @ts-ignore
-            else if(player.name == 2) color = 0x3E9F49
+            else if(player.name == 2) color = CST.UI.COLORS.PLAYER3
             // @ts-ignore
-            else if(player.name == 3) color = 0x9000FF
+            else if(player.name == 3) color = CST.UI.COLORS.PLAYER4
 
             // Redraw background
             // @ts-ignore
@@ -207,10 +217,10 @@ export class gameScene extends Phaser.Scene {
             var offset = 2;
 
             // Color the healthbar
-            if(i == 0) color = 0x507ECE
-            else if(i == 1) color = 0xD53F2B
-            else if(i == 2) color = 0x3E9F49
-            else if (i == 3) color = 0x9000FF
+            if(i == 0) color = CST.UI.COLORS.PLAYER1
+            else if(i == 1) color = CST.UI.COLORS.PLAYER2
+            else if(i == 2) color = CST.UI.COLORS.PLAYER3
+            else if (i == 3) color = CST.UI.COLORS.PLAYER4
             
             // Dropshadow
             this.add.graphics().fillStyle(0x000000, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30) + offset, 10 + offset, (this.game.renderer.width / 4-20), 20);
@@ -479,8 +489,6 @@ export class gameScene extends Phaser.Scene {
         if (GAMEVARS.deadPlayerCount >= this.playerCount - 1 && GAMEVARS.deadPlayerCount !== 0) {
             console.log("Only one player is still alive. Searching for winner.");
 
-            console.log(GAMEVARS.deadPlayers);
-
             // Cycle trough all players
             for (let i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
 
@@ -506,7 +514,7 @@ export class gameScene extends Phaser.Scene {
                     this.playerCount = 0;
 
                     // Open endScene
-                    this.scene.start(CST.SCENES.MENU, [true, i+1, skin, GAMEVARS.playerSkins, this.level]);
+                    this.scene.start(CST.SCENES.MENU, [true, i+1, skin, GAMEVARS.playerSkins, this.level, this.teamsEnabled]);
                 }
             }
         }

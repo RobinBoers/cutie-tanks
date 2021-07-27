@@ -3,6 +3,7 @@ import { loadScene } from "./scenes/loadScene";
 import { menuScene } from "./scenes/menuScene";
 import { playerSelectScene } from "./scenes/playerSelectScene";
 import { modeScene } from    "./scenes/modeScene";
+import { teamsScene } from    "./scenes/teamsScene";
 import { settingsScene } from  "./scenes/settingsScene";
 import { gameScene } from "./scenes/gameScene";
 import { endScene } from "./scenes/endScene";
@@ -24,6 +25,7 @@ const config = {
         menuScene,
         playerSelectScene,
         modeScene,
+        teamsScene,
         settingsScene,
         gameScene,
         endScene

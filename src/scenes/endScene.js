@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { CST } from "../CST";
+import { GAMEVARS } from '../GAMEVARS';
 
 export class endScene extends Phaser.Scene {
     constructor() {
@@ -13,10 +14,11 @@ export class endScene extends Phaser.Scene {
     oldSkins = null
 
     init(data) {
-        this.winner = data[0]; //
+        this.winner = data[0];
         this.skin = data[1]; // skin the winner used
         this.oldSkins = data[2]; // skins prev selected, remembered for the next round
         this.level = data[3]; // level prev selected, remembered for the next round
+        this.teamsEnabled = data[4];
     }
 
     create() {
@@ -113,7 +115,7 @@ export class endScene extends Phaser.Scene {
             if (button.index === 9 || button.index == 0 || button.index == 1) {
 
                 this.sound.play('btn_click');
-                this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select.", this.oldSkins, this.level]);
+                this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select.", this.oldSkins, this.level, GAMEVARS.defaultOptions, this.teamsEnabled]);
 
             }
 
