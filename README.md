@@ -14,8 +14,8 @@ The game had multiple gamemodes:
 play one match and return to the skin and level selection screen for another one.
 - Freeplay:  
 the same as Single Match, but you can customize all stats for players.
-
-I'm also working on a duos / teams mode where you can play in teams.
+- Duos/Teams:  
+play in teams or duos against others.
 
 ## Installation
 
