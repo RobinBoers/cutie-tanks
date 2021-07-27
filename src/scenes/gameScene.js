@@ -158,6 +158,15 @@ export class gameScene extends Phaser.Scene {
 
             if (GAMEVARS.deadPlayers[player.name] === true) return;
 
+            // Friendly fire
+            if(this.teamsEnabled) {
+                console.log(player.name);
+                console.log(bomb.name);
+                console.log(this.teamdex[player.name]);
+                console.log(this.teamdex[bomb.name]);
+                if(this.teamdex[player.name] == this.teamdex[bomb.name]) return;
+            }
+
             this.cameras.main.shake(GAMEVARS.shakeDuration, GAMEVARS.shakeAmount);
 
             // Knockback
@@ -454,6 +463,7 @@ export class gameScene extends Phaser.Scene {
 
                     if (!bomb) return;
 
+                    bomb.name = i;
                     bomb.setActive(true);
                     bomb.setVisible(true);
                     bomb.setVelocityX(-10 * GAMEVARS.playerSpeed);
@@ -472,6 +482,9 @@ export class gameScene extends Phaser.Scene {
 
                     if (!bomb) return;
 
+                    bomb.name = i;
+                    bomb.setActive(true);
+                    bomb.setVisible(true);
                     bomb.setVelocityX(10 * GAMEVARS.playerSpeed);
                     bomb.setVelocityY(Phaser.Math.Between(200, -200));
                     bomb.setBounce(1);
@@ -536,6 +549,7 @@ export class gameScene extends Phaser.Scene {
                 if (GAMEVARS.deadPlayers[i] === false) {
                     console.log("Found winner: "+(i+1));
 
+                    // Get winning team if teams are enabled
                     let winningTeam;
 
                     if(this.teamsEnabled) {
@@ -550,14 +564,16 @@ export class gameScene extends Phaser.Scene {
 
                     let winningSkins = [];
 
-                    // Get skins of winning team
-                    for(let x = 0;x<5;x++) {
-                        if(this.teamdex[x] == winningTeam) {
-                            winningSkins.push(GAMEVARS.playerSkins[x] + "_idle" + (x + 1));
-                        }
-                    }
+                    if(this.teamsEnabled) {
 
-                    console.log(winningSkins);
+                        // Get skins of winning team
+                        for(let x = 0;x<5;x++) {
+                            if(this.teamdex[x] == winningTeam) {
+                                winningSkins.push(GAMEVARS.playerSkins[x] + "_idle" + (x + 1));
+                            }
+                        }
+
+                    }
                     
                     // Stop current scene / game
                     this.scene.stop(CST.SCENES.GAME);
