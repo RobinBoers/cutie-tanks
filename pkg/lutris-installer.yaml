@@ -1,0 +1,10 @@
+files:
+- file_id: https://github.com/RobinBoers/cutie-tanks/releases/download/latest/release.zip
+game:
+  args: $GAMEDIR
+  exe: /bin/electron
+installer:
+- extract:
+    dst: $GAMEDIR
+    file: $file_id
+require-binaries: electron
