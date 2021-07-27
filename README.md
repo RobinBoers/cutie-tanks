@@ -8,17 +8,65 @@ A player can only take 10 damage before dying. The last one standing wins. Match
 
 Also, there are skins. To join a game press down on the player select screen, and then use down to select a skin.
 
+The game had multiple gamemodes:
+
+- Single Match:  
+play one match and return to the skin and level selection screen for another one.
+- Freeplay:  
+the same as Single Match, but you can customize all stats for players.
+
+I'm also working on a duos / teams mode where you can play in teams.
+
 ## Installation
 
-The game can be installed on Linux trough [Lutris](https://lutris.net/) and there is also an AUR package available for Arch Linux.
+It is possible to run the game locally using Electron. I have prebuilt packages available for Arch Linux and a Lutris install for other distros. If you want to run it on MacOS or Windows, you can build it yourself using for example Electron Forge.
 
+### Lutris
+
+There is a Lutris version available which will install the latest version for a single user.  
 [Download using Lutris](https://lutris.net/games/cutietanks/)
 
-The [AUR package](https://aur.archlinux.org/packages/cutie-tanks/) can be installed using an AUR helper like `yay` or `paru`:
+### AUR
 
+There are two AUR packages available for Arch Linux:
+
+- **cutie-tanks:**  
+install latest stable tag from GitHub system-wide
+
+- **cutie-tanks-git:**  
+clones this repo and builds it using parcel
+
+AUR packages can be installed using an AUR helper like `yay` or `paru`:
 
 ```
 yay -S cutie-tanks
+```
+
+### Build from source
+
+1. Clone this repo
+
+```
+git clone https://github.com/RobinBoers/cutie-tanks
+```
+
+2. Install npm
+
+```
+sudo apt install npm
+sudo pacman -S npm
+```
+
+3. Install dependencies
+
+```
+npm install
+```
+
+5. Build
+
+```
+npm run build
 ```
 
 ## Development
