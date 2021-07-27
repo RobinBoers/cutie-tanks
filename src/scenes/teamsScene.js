@@ -164,15 +164,32 @@ export class teamsScene extends Phaser.Scene {
                 this.sound.play('btn_click');
 
                 let playerCount = 0;
+                let team1 = 0;
+                let team2 = 0;
+                let notAllPlayersJoinedYet = false;
 
                 for(let i = 0;i<5;i++) {
                     if(this.teamdex[i] === 0 || this.teamdex[i] === 1) playerCount += 1;
+
+                    if(this.teamdex[i] === 0) team1 += 1;
+                    else if(this.teamdex[i] === 1) team2 += 1;
+
+                    if(this.teamdex[i] === 2) notAllPlayersJoinedYet = true;
                 }
 
-                if(playerCount > 1) {
-                    if(this.customSettings == true) {
-                        this.scene.start(CST.SCENES.GAME, [this.players, this.level, this.options, this.teamdex]);
-                    } else this.scene.start(CST.SCENES.GAME, [this.players, this.level, null, this.teamdex]);
+                // The game can only start if all players have joined a team
+                if(playerCount > 1 && notAllPlayersJoinedYet == false) {
+
+                    // Both teams need at least one player
+                    if(team1 > 0 && team2 > 0) {
+
+                        // Apply custom settings if used 
+                        // (I might add teams as an option to Freeplay)
+                        if(this.customSettings == true) {
+                            this.scene.start(CST.SCENES.GAME, [this.players, this.level, this.options, this.teamdex]);
+                        } else this.scene.start(CST.SCENES.GAME, [this.players, this.level, null, this.teamdex]);
+                        
+                    }
                 }                
                 
             }
