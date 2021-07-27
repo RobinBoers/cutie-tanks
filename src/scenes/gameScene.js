@@ -13,6 +13,9 @@ export class gameScene extends Phaser.Scene {
     teamdex = [];
     teamsEnabled = false;
 
+    playerCountT1 = 0;
+    playerCountT2 = 0;
+
     init(data) {
 
         // Get skins (+joinedPlayers) and level
@@ -22,7 +25,7 @@ export class gameScene extends Phaser.Scene {
 
         // Custom settings
         // (for Freeplay Mode)
-        if(data[2] && data[2] !== null) {
+        if(data[2]) {
             let tempVars = data[2];
             GAMEVARS.maxHealth = tempVars[0];
             GAMEVARS.playerSpeed = tempVars[1];
@@ -35,8 +38,19 @@ export class gameScene extends Phaser.Scene {
 
         // Teams for Teams Mode 
         if(data[3]) {
-            this.teamdex = data[4];
+            this.teamdex = data[3];
             this.teamsEnabled = true;
+
+            // Count how many players per team. Is later
+            // used to check if the game is over yet.
+            for(let i = 0; i < this.teamdex.length; i++) {
+                if(this.teamdex[i] == 0) {
+                    this.playerCountT1 += 1;
+                } else if(this.teamdex[i] == 1) {
+                    this.playerCountT2 += 1;
+                }
+            }
+
         } else {
             this.teamsEnabled = false;
         }
@@ -485,9 +499,35 @@ export class gameScene extends Phaser.Scene {
             if (GAMEVARS.deadPlayers[i] === true) GAMEVARS.deadPlayerCount += 1;
         }
 
+        // Check if a team had won the game
+        let teamWon = false;
+
+        if(this.teamsEnabled) {
+
+            let deadPlayersT1 = 0;
+            let deadPlayersT2 = 0;
+
+            // Count players in team one that are dead
+            for(let i = 0; i < this.teamdex.length; i++) {
+                if(this.teamdex[i] == 0) {
+                    if(GAMEVARS.deadPlayers[i] === true) {
+                        deadPlayersT1 += 1;
+                    }
+                } else {
+                    if(GAMEVARS.deadPlayers[i] === true) {
+                        deadPlayersT2 += 1;
+                    }
+                }
+            }
+
+            if(deadPlayersT1 >= this.playerCountT1 || deadPlayersT2 >= this.playerCountT2) {
+                teamWon = true;
+            }
+        }
+
         // Detect if only one player is alive
-        if (GAMEVARS.deadPlayerCount >= this.playerCount - 1 && GAMEVARS.deadPlayerCount !== 0) {
-            console.log("Only one player is still alive. Searching for winner.");
+        if ((GAMEVARS.deadPlayerCount >= this.playerCount - 1 && GAMEVARS.deadPlayerCount !== 0) || teamWon) {
+            console.log("Only one player is still alive or all players of a team are dead. Searching for winner.");
 
             // Cycle trough all players
             for (let i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
@@ -496,9 +536,28 @@ export class gameScene extends Phaser.Scene {
                 if (GAMEVARS.deadPlayers[i] === false) {
                     console.log("Found winner: "+(i+1));
 
+                    let winningTeam;
+
+                    if(this.teamsEnabled) {
+                        console.log(this.teamdex);
+                        winningTeam = this.teamdex[i];
+                        console.log("Found winning team: " + winningTeam);
+                    }
+
                     // Get correct animation for
                     // the endScene
                     var skin = GAMEVARS.playerSkins[i] + "_idle" + (i + 1);
+
+                    let winningSkins = [];
+
+                    // Get skins of winning team
+                    for(let x = 0;x<5;x++) {
+                        if(this.teamdex[x] == winningTeam) {
+                            winningSkins.push(GAMEVARS.playerSkins[x] + "_idle" + (x + 1));
+                        }
+                    }
+
+                    console.log(winningSkins);
                     
                     // Stop current scene / game
                     this.scene.stop(CST.SCENES.GAME);
@@ -514,7 +573,11 @@ export class gameScene extends Phaser.Scene {
                     this.playerCount = 0;
 
                     // Open endScene
-                    this.scene.start(CST.SCENES.MENU, [true, i+1, skin, GAMEVARS.playerSkins, this.level, this.teamsEnabled]);
+                    if(this.teamsEnabled && winningSkins.length > 1) {
+                        this.scene.start(CST.SCENES.MENU, [true, i+1, winningSkins, GAMEVARS.playerSkins, this.level, this.teamsEnabled, true]);
+                    } else {
+                        this.scene.start(CST.SCENES.MENU, [true, i+1, skin,         GAMEVARS.playerSkins, this.level, this.teamsEnabled, false]);
+                    }
                 }
             }
         }

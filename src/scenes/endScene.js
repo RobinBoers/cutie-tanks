@@ -14,11 +14,12 @@ export class endScene extends Phaser.Scene {
     oldSkins = null
 
     init(data) {
-        this.winner = data[0];
+        this.winner = data[0]; // not used anymore. id of the player in normal digits (0 -> 1)
         this.skin = data[1]; // skin the winner used
         this.oldSkins = data[2]; // skins prev selected, remembered for the next round
         this.level = data[3]; // level prev selected, remembered for the next round
-        this.teamsEnabled = data[4];
+        this.teamsEnabled = data[4]; // if teams are enabled or not, remembered for next round
+        this.winningTeam = data[5]; // id of the winning team
     }
 
     create() {
@@ -79,23 +80,51 @@ export class endScene extends Phaser.Scene {
         playerBox.fillRect(this.game.renderer.width / 2.57 - 20, this.game.renderer.height * 0.2, this.game.renderer.width / 4, 250).setDepth(1);
         boxShadow.fillRect(this.game.renderer.width / 2.57 - 20 + offset, offset + this.game.renderer.height * 0.2, this.game.renderer.width / 4, 250).setDepth(0);
 
-        // Add text (WINNER!)
-        this.add.text(this.game.renderer.width / 2.57 - 20 + 55, this.game.renderer.height * 0.2 + 210, 'WINNER!', { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
+        // Add text (WINNER! or WINNERS! if playing in teams)
+        if(this.winningTeam === true) {
+            this.add.text(this.game.renderer.width / 2.57 - 20 + 55, this.game.renderer.height * 0.2 + 210, 'WINNERS!', { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2)
+        } else this.add.text(this.game.renderer.width / 2.57 - 20 + 55, this.game.renderer.height * 0.2 + 210, 'WINNER!', { font: '20px Courier', color: CST.UI.TEXTCOLOR }).setDepth(2);
 
-        // Another line, because the sprite itself doesnt
-        // have a bottom
-        let playerSpriteBottom = this.add.graphics();
-        playerSpriteBottom.fillStyle(0xffffff, 1.0);
+        if(this.winningTeam === true) {
 
-        // Add sprite
-        let player = this.add.sprite(this.game.renderer.width / 2.57 - 20 + 100, this.game.renderer.height * 0.2 + 110, this.skin).setDepth(2).setScale(3.2);
-        
-        // Play animation
-        player.anims.play(this.skin, true);
+            console.log(this.skin.length);
 
-        // Add the line at the bottom
-        playerSpriteBottom.setDepth(4);
-        playerSpriteBottom.fillRect(this.game.renderer.width / 2.57 - 20 + 41, this.game.renderer.height * 0.2 + 163, 120, 3.2)
+            // If there is a winning team, the skin is an array.
+            // Loop trough it and show every players sprite
+            for(let i = 0;i<this.skin.length;i++) {
+
+                // Another line, because the sprite itself doesnt
+                // have a bottom
+                let playerSpriteBottom = this.add.graphics();
+                playerSpriteBottom.fillStyle(0xffffff, 1.0);
+
+                // Add sprite
+                let player = this.add.sprite(this.game.renderer.width / 2.57 - 20 + 100 + -10 + 20*i, this.game.renderer.height * 0.2 + 110 + -10 + 10*i, this.skin[i]).setDepth(2+i).setScale(3.2);
+                
+                // Play animation
+                player.anims.play(this.skin[i], true);
+
+                // Add the line at the bottom
+                playerSpriteBottom.setDepth(3+i);
+                playerSpriteBottom.fillRect(this.game.renderer.width / 2.57 - 20 + 41 -10 +20*i, this.game.renderer.height * 0.2 + 163 + -10 +10*i, 120, 3.2)
+            }
+
+        } else {
+            // Another line, because the sprite itself doesnt
+            // have a bottom
+            let playerSpriteBottom = this.add.graphics();
+            playerSpriteBottom.fillStyle(0xffffff, 1.0);
+
+            // Add sprite
+            let player = this.add.sprite(this.game.renderer.width / 2.57 - 20 + 100, this.game.renderer.height * 0.2 + 110, this.skin).setDepth(2).setScale(3.2);
+            
+            // Play animation
+            player.anims.play(this.skin, true);
+
+            // Add the line at the bottom
+            playerSpriteBottom.setDepth(4);
+            playerSpriteBottom.fillRect(this.game.renderer.width / 2.57 - 20 + 41, this.game.renderer.height * 0.2 + 163, 120, 3.2)
+        }
 
         // Text at the bottom
         this.add.text(this.game.renderer.width / 2.57, this.game.renderer.height * 0.8, 'Press start', { font: '24px Courier', color: CST.UI.TEXTCOLOR });

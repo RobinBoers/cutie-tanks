@@ -183,12 +183,15 @@ export class teamsScene extends Phaser.Scene {
                     // Both teams need at least one player
                     if(team1 > 0 && team2 > 0) {
 
+                        console.log("Teamdex in teamsScene: ");
+                        console.log(this.teamdex);
+
                         // Apply custom settings if used 
                         // (I might add teams as an option to Freeplay)
                         if(this.customSettings == true) {
                             this.scene.start(CST.SCENES.GAME, [this.players, this.level, this.options, this.teamdex]);
-                        } else this.scene.start(CST.SCENES.GAME, [this.players, this.level, null, this.teamdex]);
-                        
+                        } else this.scene.start(CST.SCENES.GAME, [this.players, this.level, false, this.teamdex]);
+
                     }
                 }                
                 
