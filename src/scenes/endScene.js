@@ -1,6 +1,5 @@
 import Phaser from 'phaser'
 import { CST } from "../CST";
-import { GAMEVARS } from '../GAMEVARS';
 
 export class endScene extends Phaser.Scene {
     constructor() {
@@ -144,7 +143,7 @@ export class endScene extends Phaser.Scene {
             if (button.index === 9 || button.index == 0 || button.index == 1) {
 
                 this.sound.play('btn_click');
-                this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select.", this.oldSkins, this.level, GAMEVARS.defaultOptions, this.teamsEnabled]);
+                this.scene.start(CST.SCENES.PLAYERSELECT, ["Open player select.", this.oldSkins, this.level, false, this.teamsEnabled]);
 
             }
 
