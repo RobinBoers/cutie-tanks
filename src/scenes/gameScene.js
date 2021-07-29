@@ -9,14 +9,14 @@ export class gameScene extends Phaser.Scene {
         })
     }
 
-    level = "default";
-    teamdex = [];
-    teamsEnabled = false;
-
-    playerCountT1 = 0;
-    playerCountT2 = 0;
-
     init(data) {
+
+        this.level = "default";
+        this.teamdex = [];
+        this.teamsEnabled = false;
+
+        this.playerCountT1 = 0;
+        this.playerCountT2 = 0;
 
         // Get skins (+joinedPlayers) and level
         // from playerSelectScene
@@ -51,8 +51,6 @@ export class gameScene extends Phaser.Scene {
                 }
             }
 
-        } else {
-            this.teamsEnabled = false;
         }
     }
 
