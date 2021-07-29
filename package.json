@@ -1,7 +1,7 @@
 {
 	"name": "cutie-tanks",
-	"version": "1.4",
-	"description": "",
+	"version": "1.5",
+	"description": "Shoot 'em all arcade game",
 	"scripts": {
 		"start": "parcel src/index.html -p 3000",
 		"dev": "parcel src/index.html -p 3000",

@@ -2,20 +2,22 @@
 
 This is a arcade game where the last one alive wins.  
 The players play as very cute tanks, and can shoot an unlimited amount of bullets / bombs at eachother.  
-A player can only take 10 damage before dying. The last one standing wins. Matches are around 1 to 2 minutes and very chaotic. For now there are 3 levels to choose from, but I plan on making some more.
-
-[Play on itch.io](https://robijntje.itch.io/cutie-tanks)
-
-Also, there are skins. To join a game press down on the player select screen, and then use down to select a skin.
+A player can only take 10 hits before dying. The last one standing wins. Matches are around 1 to 2 minutes and very chaotic. For now there are 3 levels to choose from, but I plan on making some more.
 
 The game had multiple gamemodes:
 
-- Single Match:  
+- **Single Match:**  
 play one match and return to the skin and level selection screen for another one.
-- Freeplay:  
+- **Freeplay:**  
 the same as Single Match, but you can customize all stats for players.
-- Duos/Teams:  
+- **Duos/Teams:**  
 play in teams or duos against others.
+
+Also, there are skins. To join a game press down on the dpad on the player select screen, and then use up and down to select a skin from a lot of cool tanks.
+
+The game is playable online on itch.io and also as a instalable app using Electron.
+
+[Play on itch.io](https://robijntje.itch.io/cutie-tanks)
 
 ## Installation
 
@@ -96,7 +98,7 @@ to join the game and select a skin
 - **In-Game:**  
 to play the game
 - **Winner:**  
-shows the winner (the last one standing)
+shows the winner(s): the last one / last team standing
 
 To test the game:
 
@@ -111,6 +113,8 @@ npm run build
 ```
 
 ## Controls
-The game is designed with a xbox controller in mind, but any controller should work. To move use the left analog stick. To aim use the right analog stick. To shoot use the analog right trigger.
+The game is designed with a Xbox controller in mind, but any controller should work. To move use the left analog stick. To aim use the right analog stick. To shoot use the analog right trigger. To navigate menus dpad or left analog stick and A/B or start/select.
 
 ![](artwork/controls.png)
+
+NOTE: the image above says ABXY to change the level. Since a recent version that has changed and the levels are selected just like any other menu is navigated: using the dpad or left analog stick.
