@@ -11,16 +11,44 @@ export class gameScene extends Phaser.Scene {
 
     init(data) {
 
+        // Reset variables used
+        // in game logic
+
+        // Level used (changed 
+        // later based on input from previous scene)
         this.level = "default";
+
+        // Teams stuff
         this.teamdex = [];
         this.teamsEnabled = false;
 
+        // Player counts
+        this.playerCount = 0;
         this.playerCountT1 = 0;
         this.playerCountT2 = 0;
+        this.deadPlayerCount = 0;
+
+        // Lists with player states
+        this.players = [];
+        this.tempPlayers = [];
+        this.deadPlayers = [];
+
+        // Skins
+        this.playerSkins = [];
+        this.playerHealth = [];
+
+        // Groups for Phaser stuff
+        this.playersGroup = {};
+        this.platforms = {};
+        this.belts = {};
+        this.jumppads = {};
+        this.bombs = {};
+
+        this.fireTimer = [0,0,0,0];
 
         // Get skins (+joinedPlayers) and level
         // from playerSelectScene
-        GAMEVARS.tempPlayers = data[0];
+        this.tempPlayers = data[0];
         this.level = data[1];
 
         // Custom settings
@@ -54,16 +82,14 @@ export class gameScene extends Phaser.Scene {
         }
     }
 
-    playerCount = 0;
-
     create() {
 
         // Create groups for collisions and overlap stuff
-        GAMEVARS.playersGroup = this.physics.add.group();
-        GAMEVARS.platforms = this.physics.add.staticGroup();
-        GAMEVARS.belts = this.physics.add.staticGroup();
-        GAMEVARS.jumppads = this.physics.add.group();
-        GAMEVARS.bombs = this.physics.add.group({ maxSize: 20 }); // max 20 bombs at the same time in screen
+        this.playersGroup = this.physics.add.group();
+        this.platforms = this.physics.add.staticGroup();
+        this.belts = this.physics.add.staticGroup();
+        this.jumppads = this.physics.add.group();
+        this.bombs = this.physics.add.group({ maxSize: 20 }); // max 20 bombs at the same time in screen
         
         // Moving platform animations
         this.anims.create({
@@ -77,36 +103,36 @@ export class gameScene extends Phaser.Scene {
         // will spawn in different locations
         if (this.level == "factory") {
             this.add.image(400, 350, 'factory_bg').setScale(4);
-            GAMEVARS.belts.create(50, 200, 'belt').anims.play('belt_run');
-            GAMEVARS.platforms.create(800, 500, 'pipe');
-            GAMEVARS.platforms.create(60, 500, 'pipe');
-            GAMEVARS.belts.create(800, 600, 'belt').anims.play('belt_run');
-            GAMEVARS.platforms.create(400, 300, 'pipe');
-            GAMEVARS.jumppads.create(740, 400, 'jumppad').setScale(4);
+            this.belts.create(50, 200, 'belt').anims.play('belt_run');
+            this.platforms.create(800, 500, 'pipe');
+            this.platforms.create(60, 500, 'pipe');
+            this.belts.create(800, 600, 'belt').anims.play('belt_run');
+            this.platforms.create(400, 300, 'pipe');
+            this.jumppads.create(740, 400, 'jumppad').setScale(4);
         } else if (this.level == "city") {
             this.add.image(400, 200, 'city_bg');
-            GAMEVARS.platforms.create(600, 400, 'stone');
-            GAMEVARS.platforms.create(50, 250, 'stone');
-            GAMEVARS.platforms.create(750, 220, 'stone');
-            GAMEVARS.jumppads.create(430, 200, 'jumppad').setScale(4);
+            this.platforms.create(600, 400, 'stone');
+            this.platforms.create(50, 250, 'stone');
+            this.platforms.create(750, 220, 'stone');
+            this.jumppads.create(430, 200, 'jumppad').setScale(4);
         } else if (this.level == "forest") {
             this.add.image(400, 260, 'forest_bg').setScale(3);
-            GAMEVARS.platforms.create(50, 500, 'log');
-            GAMEVARS.platforms.create(-50, 150, 'log'); // .setRotation(10)
-            GAMEVARS.platforms.create(600, 300, 'log'); // .setRotation(-85)
-            GAMEVARS.platforms.create(900, 100, 'log');
-            GAMEVARS.jumppads.create(170, 400, 'jumppad').setScale(4);
+            this.platforms.create(50, 500, 'log');
+            this.platforms.create(-50, 150, 'log'); // .setRotation(10)
+            this.platforms.create(600, 300, 'log'); // .setRotation(-85)
+            this.platforms.create(900, 100, 'log');
+            this.jumppads.create(170, 400, 'jumppad').setScale(4);
         } else { // Debug level as fallback
             this.add.image(400, 300, 'bg');
-            GAMEVARS.platforms.create(600, 400, 'ground');
-            GAMEVARS.platforms.create(50, 250, 'ground');
-            GAMEVARS.platforms.create(750, 220, 'ground');
+            this.platforms.create(600, 400, 'ground');
+            this.platforms.create(50, 250, 'ground');
+            this.platforms.create(750, 220, 'ground');
         }
         
         // @ts-ignore
-        this.physics.add.collider(GAMEVARS.platforms, GAMEVARS.jumppads);
+        this.physics.add.collider(this.platforms, this.jumppads);
         // @ts-ignore
-        this.physics.add.overlap(GAMEVARS.platforms, GAMEVARS.bombs, (platform, bomb) => {
+        this.physics.add.overlap(this.platforms, this.bombs, (platform, bomb) => {
 
             // Camera shake (disabled)
             // this.cameras.main.shake(GAMEVARS.shakeDuration, GAMEVARS.shakeAmount);
@@ -120,7 +146,7 @@ export class gameScene extends Phaser.Scene {
             
         }, null, this);
         // @ts-ignore
-        this.physics.add.overlap(GAMEVARS.belts, GAMEVARS.bombs, (platform, bomb) => {
+        this.physics.add.overlap(this.belts, this.bombs, (platform, bomb) => {
 
             // Camera shake (disabled)
             // this.cameras.main.shake(GAMEVARS.shakeDuration, GAMEVARS.shakeAmount);
@@ -134,27 +160,27 @@ export class gameScene extends Phaser.Scene {
             
         }, null, this);
         // @ts-ignore
-        this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.platforms);
+        this.physics.add.collider(this.playersGroup, this.platforms);
         // @ts-ignore
-        this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.belts, (player) => {
-            GAMEVARS.players[player.name].x += GAMEVARS.playerSpeed * .01;
+        this.physics.add.collider(this.playersGroup, this.belts, (player) => {
+            this.players[player.name].x += GAMEVARS.playerSpeed * .01;
 
         });
         // @ts-ignore
-        this.physics.add.collider(GAMEVARS.playersGroup, GAMEVARS.playersGroup);
+        this.physics.add.collider(this.playersGroup, this.playersGroup);
         // @ts-ignore
-        this.physics.add.overlap(GAMEVARS.playersGroup, GAMEVARS.jumppads, (player) => {
+        this.physics.add.overlap(this.playersGroup, this.jumppads, (player) => {
 
             // Play sound
             this.sound.play('jump');
 
-            GAMEVARS.players[player.name].setVelocityY(-GAMEVARS.jumpSpeed * 1.5);
+            this.players[player.name].setVelocityY(-GAMEVARS.jumpSpeed * 1.5);
 
         }, null, this);
         // @ts-ignore
-        this.physics.add.overlap(GAMEVARS.playersGroup, GAMEVARS.bombs, (player, bomb) => {
+        this.physics.add.overlap(this.playersGroup, this.bombs, (player, bomb) => {
 
-            if (GAMEVARS.deadPlayers[player.name] === true) return;
+            if (this.deadPlayers[player.name] === true) return;
 
             // Friendly fire
             if(this.teamsEnabled) {
@@ -182,7 +208,7 @@ export class gameScene extends Phaser.Scene {
             this.sound.play('explosion');
 
             // Damage player
-            if(!GAMEVARS.invulnerable) GAMEVARS.playerHealth[player.name] -= 1;
+            if(!GAMEVARS.invulnerable) this.playerHealth[player.name] -= 1;
 
             // Color the healthbar
             // @ts-ignore
@@ -200,7 +226,7 @@ export class gameScene extends Phaser.Scene {
 
             // Redraw health
             // @ts-ignore
-            this.add.graphics().fillStyle(color, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30 ), 10, (this.game.renderer.width / 4 -20) * (GAMEVARS.playerHealth[player.name] / GAMEVARS.maxHealth), 20);
+            this.add.graphics().fillStyle(color, 1.0).fillRect((player.name + 1) * 20 + player.name * (this.game.renderer.width / 4 - 30 ), 10, (this.game.renderer.width / 4 -20) * (this.playerHealth[player.name] / GAMEVARS.maxHealth), 20);
 
             // Remove bomb
             // to make space for new bombs
@@ -209,29 +235,29 @@ export class gameScene extends Phaser.Scene {
         }, null, this);
 
         // Add health bars at the top of the screen
-        for (var i = 0; i < GAMEVARS.tempPlayers.length; i++) {
+        for (var i = 0; i < this.tempPlayers.length; i++) {
 
             // If the player didnt join, continue to the next one
-            if(GAMEVARS.tempPlayers[i] === null || GAMEVARS.tempPlayers[i] === undefined) continue;
+            if(this.tempPlayers[i] === null || this.tempPlayers[i] === undefined) continue;
 
             this.playerCount += 1;
             
             // Create player at random location with scale 1.4 and bounce 0.2
-            GAMEVARS.players[i] = GAMEVARS.playersGroup.create(Phaser.Math.Between(200, 600), Phaser.Math.Between(100, 500), GAMEVARS.tempPlayers[i]+(i+1)).setBounce(0.2).setScale(1.4);
+            this.players[i] = this.playersGroup.create(Phaser.Math.Between(200, 600), Phaser.Math.Between(100, 500), this.tempPlayers[i]+(i+1)).setBounce(0.2).setScale(1.4);
 
             // Set skin
-            GAMEVARS.playerSkins[i] = GAMEVARS.tempPlayers[i];
+            this.playerSkins[i] = this.tempPlayers[i];
         
             // Set speed limit (for falling, 
             // the player cant ride that fast)
-            GAMEVARS.players[i].body.maxSpeed = GAMEVARS.speedLimit;
+            this.players[i].body.maxSpeed = GAMEVARS.speedLimit;
 
             // Set name. This is used to identify the player
             // in other parts of the game.
-            GAMEVARS.players[i].name = i;
+            this.players[i].name = i;
 
             // Set health
-            GAMEVARS.playerHealth[i] = GAMEVARS.maxHealth;
+            this.playerHealth[i] = GAMEVARS.maxHealth;
 
             // Color and offset for hp bar
             var color = CST.UI.CARDCOLOR;
@@ -250,7 +276,7 @@ export class gameScene extends Phaser.Scene {
             this.add.graphics().fillStyle(CST.UI.CARDCOLOR, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4-20), 20);
 
             // Health itself
-            this.add.graphics().fillStyle(color, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4 - 20) * (GAMEVARS.playerHealth[i] / GAMEVARS.maxHealth), 20);
+            this.add.graphics().fillStyle(color, 1.0).fillRect((i + 1) * 20 + i * (this.game.renderer.width / 4 - 30), 10, (this.game.renderer.width / 4 - 20) * (this.playerHealth[i] / GAMEVARS.maxHealth), 20);
 
         }
         
@@ -296,7 +322,7 @@ export class gameScene extends Phaser.Scene {
 
         // If the bullets goes out of the screen,
         // delete it
-        GAMEVARS.bombs.children.each(function(b) {
+        this.bombs.children.each(function(b) {
             if (b.active) {
                 if (b.y < 0) {
                     b.destroy();
@@ -319,7 +345,7 @@ export class gameScene extends Phaser.Scene {
 
         // If the players or pads aren't known, return
         // to prevent crashes
-        if (!GAMEVARS.players || !pads) return;
+        if (!this.players || !pads) return;
 
         // Run the code for each joined player
         // This uses the pads to count players, but
@@ -335,7 +361,7 @@ export class gameScene extends Phaser.Scene {
             var tank = i + 1;
 
             // If player isnt loaded yet, continue
-            if (!gamepad || !GAMEVARS.players[i]) continue;   
+            if (!gamepad || !this.players[i]) continue;   
 
             // When player1 presses the back button,
             // end game
@@ -346,14 +372,8 @@ export class gameScene extends Phaser.Scene {
 
                 this.scene.stop(CST.SCENES.GAME);
 
-                GAMEVARS.players = [];
-                GAMEVARS.deadPlayers = [];
-                GAMEVARS.platforms = {};
-                GAMEVARS.cursors = "";
-                GAMEVARS.playerHealth = [];
-                GAMEVARS.deadPlayers = [];
-                GAMEVARS.deadPlayerCount = 0;
-                this.playerCount = 0;
+                this.playerHealth = [];
+                this.deadPlayerCount = 0;
 
                 this.cameras.main.fadeOut(CST.UI.FADEDURATION, 0, 0, 0)
 
@@ -364,46 +384,46 @@ export class gameScene extends Phaser.Scene {
             
             // If the players health is equal ar lower than 0,
             // add him to the dead players list
-            if (GAMEVARS.playerHealth[i] <= 0) GAMEVARS.deadPlayers[i] = true;
-            else GAMEVARS.deadPlayers[i] = false;
+            if (this.playerHealth[i] <= 0) this.deadPlayers[i] = true;
+            else this.deadPlayers[i] = false;
 
             // If the player is dead, change sprite and continue
-            if (GAMEVARS.deadPlayers[i] === true) {
-                GAMEVARS.players[i].setVelocityX(0);
-                GAMEVARS.players[i].body.pushable = false;
-                GAMEVARS.players[i].anims.play(GAMEVARS.playerSkins[i]+'_dead' + tank, true);
+            if (this.deadPlayers[i] === true) {
+                this.players[i].setVelocityX(0);
+                this.players[i].body.pushable = false;
+                this.players[i].anims.play(this.playerSkins[i]+'_dead' + tank, true);
                 continue;
             }
 
             // Control player using d-pad
             // This moves and aims at the same time.
             if (gamepad.left) {
-                GAMEVARS.players[i].setVelocityX(-GAMEVARS.playerSpeed);
+                this.players[i].setVelocityX(-GAMEVARS.playerSpeed);
                 
-                GAMEVARS.players[i].anims.play(GAMEVARS.playerSkins[i]+'_ride' + tank, true);
-                GAMEVARS.players[i].setFlipX(true);
+                this.players[i].anims.play(this.playerSkins[i]+'_ride' + tank, true);
+                this.players[i].setFlipX(true);
             } else if (gamepad.right) {
-                GAMEVARS.players[i].setVelocityX(GAMEVARS.playerSpeed);
+                this.players[i].setVelocityX(GAMEVARS.playerSpeed);
 
-                GAMEVARS.players[i].anims.play(GAMEVARS.playerSkins[i]+'_ride' + tank, true);
-                GAMEVARS.players[i].setFlipX(false);
+                this.players[i].anims.play(this.playerSkins[i]+'_ride' + tank, true);
+                this.players[i].setFlipX(false);
             } else {
-                GAMEVARS.players[i].setVelocityX(0);
+                this.players[i].setVelocityX(0);
 
-                if (gamepad.axes.length && gamepad.axes[0].getValue() === 0 && gamepad.buttons[7].value < 0.7) GAMEVARS.players[i].anims.play(GAMEVARS.playerSkins[i]+'_idle' + tank, true);
-                else if(!gamepad.axes.length && gamepad.buttons[7].value < 0.7) GAMEVARS.players[i].anims.play(GAMEVARS.playerSkins[i]+'_idle' + tank, true);
+                if (gamepad.axes.length && gamepad.axes[0].getValue() === 0 && gamepad.buttons[7].value < 0.7) this.players[i].anims.play(this.playerSkins[i]+'_idle' + tank, true);
+                else if(!gamepad.axes.length && gamepad.buttons[7].value < 0.7) this.players[i].anims.play(this.playerSkins[i]+'_idle' + tank, true);
             }
 
             // Jump (only works if player is on the ground)
-            if (gamepad.up && GAMEVARS.players[i].body.touching.down) {
+            if (gamepad.up && this.players[i].body.touching.down) {
 
                 // This sets the ySpeed. This way there is no boost when jumping
                 // on a jumppad and the speed is only decreased (is weird, so I disabled it)
-                // GAMEVARS.players[i].setVelocityY(-GAMEVARS.jumpSpeed);
+                // this.players[i].setVelocityY(-GAMEVARS.jumpSpeed);
 
                 // This adds the jumpSpeed to ySpeed, this way
                 // the player gets a boost when jumping on a jumppad
-                GAMEVARS.players[i].body.velocity.y += -GAMEVARS.jumpSpeed;
+                this.players[i].body.velocity.y += -GAMEVARS.jumpSpeed;
             }
 
             // Control player using analog stick
@@ -414,8 +434,8 @@ export class gameScene extends Phaser.Scene {
                 let axisV = gamepad.axes[1].getValue();
 
                 if (axisH !== 0) {
-                    GAMEVARS.players[i].setVelocityX(axisH * GAMEVARS.playerSpeed);
-                    GAMEVARS.players[i].anims.play(GAMEVARS.playerSkins[i]+'_ride' + tank, true);
+                    this.players[i].setVelocityX(axisH * GAMEVARS.playerSpeed);
+                    this.players[i].anims.play(this.playerSkins[i]+'_ride' + tank, true);
                 }
 
                 // This weird hack is for my SNES controller.
@@ -423,12 +443,12 @@ export class gameScene extends Phaser.Scene {
                 // Phaser. I'm checking for the vendor and productid to identify this
                 // type of controller and fix the issue :)
                 if(gamepad.id.includes("0810") && gamepad.id.includes("e501")) {
-                    if (-axisH > 0) GAMEVARS.players[i].setFlipX(true);
-                    if (-axisH < 0) GAMEVARS.players[i].setFlipX(false);
+                    if (-axisH > 0) this.players[i].setFlipX(true);
+                    if (-axisH < 0) this.players[i].setFlipX(false);
                 }
 
-                // if(axisV < 0 && GAMEVARS.players[i].body.touching.down) GAMEVARS.players[i].setVelocityY(axisV * jumpSpeed);`
-                if (axisV < -0.5 && GAMEVARS.players[i].body.touching.down) GAMEVARS.players[i].body.velocity.y += -GAMEVARS.jumpSpeed;
+                // if(axisV < 0 && this.players[i].body.touching.down) this.players[i].setVelocityY(axisV * jumpSpeed);`
+                if (axisV < -0.5 && this.players[i].body.touching.down) this.players[i].body.velocity.y += -GAMEVARS.jumpSpeed;
             }
 
             // Control player using analog stick
@@ -437,27 +457,27 @@ export class gameScene extends Phaser.Scene {
             {
                 let axisH = gamepad.axes[2].getValue();
 
-                if (axisH > 0.8) GAMEVARS.players[i].setFlipX(false);
-                if (axisH < -0.8) GAMEVARS.players[i].setFlipX(true);
+                if (axisH > 0.8) this.players[i].setFlipX(false);
+                if (axisH < -0.8) this.players[i].setFlipX(true);
             }
 
             // Firetimer is a cooldown for
             // shooting bombs
-            GAMEVARS.fireTimer[i]++;
+            this.fireTimer[i]++;
             
             // If the player presses A (Xbox controller) or right analog trigger, shoot ball
             if (gamepad.buttons[0].value === 1 || gamepad.buttons[7].value > 0.7) {   
                 
-                if (GAMEVARS.fireTimer[i] < GAMEVARS.cooldown) continue;
+                if (this.fireTimer[i] < GAMEVARS.cooldown) continue;
 
-                GAMEVARS.fireTimer[i] = 0;
+                this.fireTimer[i] = 0;
 
                 // Shoot bomb to left
-                if (GAMEVARS.players[i].flipX == true) {
-                    // var bomb = GAMEVARS.bombs.create(GAMEVARS.players[i].x - 45, GAMEVARS.players[i].y - 5, 'bomb');
+                if (this.players[i].flipX == true) {
+                    // var bomb = this.bombs.create(this.players[i].x - 45, this.players[i].y - 5, 'bomb');
 
-                    let bomb = GAMEVARS.bombs.create(GAMEVARS.players[i].x - 45, GAMEVARS.players[i].y - 5, 'bomb');
-                    // var bomb = GAMEVARS.bombs.get(GAMEVARS.players[i].x - 45, GAMEVARS.players[i].y - 5);
+                    let bomb = this.bombs.create(this.players[i].x - 45, this.players[i].y - 5, 'bomb');
+                    // var bomb = this.bombs.get(this.players[i].x - 45, this.players[i].y - 5);
 
                     if (!bomb) return;
 
@@ -476,7 +496,7 @@ export class gameScene extends Phaser.Scene {
 
                 // Shoot bomb to right
                 else {
-                    let bomb = GAMEVARS.bombs.create(GAMEVARS.players[i].x + 45, GAMEVARS.players[i].y - 5, 'bomb');
+                    let bomb = this.bombs.create(this.players[i].x + 45, this.players[i].y - 5, 'bomb');
 
                     if (!bomb) return;
 
@@ -494,20 +514,20 @@ export class gameScene extends Phaser.Scene {
                 }
 
                 // Play animation and play sound
-                GAMEVARS.players[i].anims.play(GAMEVARS.playerSkins[i]+'_shoot' + tank, true);
+                this.players[i].anims.play(this.playerSkins[i]+'_shoot' + tank, true);
                 this.sound.play('shoot');
             } 
         }
 
         // Screenwrapping
-        this.physics.world.wrap(GAMEVARS.playersGroup, 10);     //32 padding
+        this.physics.world.wrap(this.playersGroup, 10);     //32 padding
 
         // Reset count to recount
-        GAMEVARS.deadPlayerCount = 0;
+        this.deadPlayerCount = 0;
 
         // Count dead players
-        for (let i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
-            if (GAMEVARS.deadPlayers[i] === true) GAMEVARS.deadPlayerCount += 1;
+        for (let i = 0; i <= this.deadPlayers.length; i++) {
+            if (this.deadPlayers[i] === true) this.deadPlayerCount += 1;
         }
 
         // Check if a team had won the game
@@ -521,11 +541,11 @@ export class gameScene extends Phaser.Scene {
             // Count players in team one that are dead
             for(let i = 0; i < this.teamdex.length; i++) {
                 if(this.teamdex[i] == 0) {
-                    if(GAMEVARS.deadPlayers[i] === true) {
+                    if(this.deadPlayers[i] === true) {
                         deadPlayersT1 += 1;
                     }
                 } else {
-                    if(GAMEVARS.deadPlayers[i] === true) {
+                    if(this.deadPlayers[i] === true) {
                         deadPlayersT2 += 1;
                     }
                 }
@@ -537,14 +557,14 @@ export class gameScene extends Phaser.Scene {
         }
 
         // Detect if only one player is alive
-        if ((GAMEVARS.deadPlayerCount >= this.playerCount - 1 && GAMEVARS.deadPlayerCount !== 0) || teamWon) {
+        if ((this.deadPlayerCount >= this.playerCount - 1 && this.deadPlayerCount !== 0) || teamWon) {
             console.log("Only one player is still alive or all players of a team are dead. Searching for winner.");
 
             // Cycle trough all players
-            for (let i = 0; i <= GAMEVARS.deadPlayers.length; i++) {
+            for (let i = 0; i <= this.deadPlayers.length; i++) {
 
                 // If the player is still alive, he is the winner
-                if (GAMEVARS.deadPlayers[i] === false) {
+                if (this.deadPlayers[i] === false) {
                     console.log("Found winner: "+(i+1));
 
                     // Get winning team if teams are enabled
@@ -558,7 +578,7 @@ export class gameScene extends Phaser.Scene {
 
                     // Get correct animation for
                     // the endScene
-                    var skin = GAMEVARS.playerSkins[i] + "_idle" + (i + 1);
+                    var skin = this.playerSkins[i] + "_idle" + (i + 1);
 
                     let winningSkins = [];
 
@@ -567,7 +587,7 @@ export class gameScene extends Phaser.Scene {
                         // Get skins of winning team
                         for(let x = 0;x<5;x++) {
                             if(this.teamdex[x] == winningTeam) {
-                                winningSkins.push(GAMEVARS.playerSkins[x] + "_idle" + (x + 1));
+                                winningSkins.push(this.playerSkins[x] + "_idle" + (x + 1));
                             }
                         }
 
@@ -577,20 +597,14 @@ export class gameScene extends Phaser.Scene {
                     this.scene.stop(CST.SCENES.GAME);
 
                     // Reset game
-                    GAMEVARS.players = [];
-                    GAMEVARS.deadPlayers = [];
-                    GAMEVARS.platforms = {};
-                    GAMEVARS.cursors = "";
-                    GAMEVARS.playerHealth = [];
-                    GAMEVARS.deadPlayers = [];
-                    GAMEVARS.deadPlayerCount = 0;
-                    this.playerCount = 0;
+                    this.playerHealth = [];
+                    this.deadPlayerCount = 0;
 
                     // Open endScene
                     if(this.teamsEnabled && winningSkins.length > 1) {
-                        this.scene.start(CST.SCENES.MENU, [true, i+1, winningSkins, GAMEVARS.playerSkins, this.level, this.teamsEnabled, true]);
+                        this.scene.start(CST.SCENES.MENU, [true, i+1, winningSkins, this.playerSkins, this.level, this.teamsEnabled, true]);
                     } else {
-                        this.scene.start(CST.SCENES.MENU, [true, i+1, skin,         GAMEVARS.playerSkins, this.level, this.teamsEnabled, false]);
+                        this.scene.start(CST.SCENES.MENU, [true, i+1, skin,         this.playerSkins, this.level, this.teamsEnabled, false]);
                     }
                 }
             }
