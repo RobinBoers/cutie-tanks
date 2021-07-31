@@ -11,7 +11,7 @@ export class modeScene extends Phaser.Scene {
 
     currentMode = 0;
     fireDelay = 10;
-    fireTimer = this.fireDelay;
+    fireTimer = 0;
 
     init(data) {
         console.log(data[0]);

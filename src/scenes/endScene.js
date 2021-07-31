@@ -8,10 +8,6 @@ export class endScene extends Phaser.Scene {
         })
     }
 
-    winner = null
-    skin = null
-    oldSkins = null
-
     init(data) {
         this.winner = data[0]; // not used anymore. id of the player in normal digits (0 -> 1)
         this.skin = data[1]; // skin the winner used

@@ -47,6 +47,8 @@ export class menuScene extends Phaser.Scene {
             this.sound.play('btn_hover');
         })
         
+        // Reset scale if the cursor
+        // isnt above button
         playButton.on("pointerout", () => {
             playButton.setScale(2);
         })

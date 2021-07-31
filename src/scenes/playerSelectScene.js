@@ -10,17 +10,20 @@ export class playerSelectScene extends Phaser.Scene {
 
     level = "default"
     skindex = CST.SKINS;
-    currentSkin = [0,0,0,0];
-    currentLevel = 0;
-    playerSprites = [];
     customSettings = false;
-    teamsEnabled = false;
 
     fireDelay = 10;
-    fireTimer = this.fireDelay;
+    fireTimer = 0;
 
     init(data) {
+
+        // Debug messages
         console.log(data[0]);
+
+        this.teamsEnabled = false;
+        this.currentSkin = [0,0,0,0];
+        this.currentLevel = 0;
+        this.playerSprites = [];
 
         // Load skins from the previous round
         if(data[1]) {
@@ -52,8 +55,6 @@ export class playerSelectScene extends Phaser.Scene {
         // Check if TEAMS mode is enabled
         if(data[4] === true) {
             this.teamsEnabled = true;
-        } else {
-            this.teamsEnabled = false;
         }
     }
 

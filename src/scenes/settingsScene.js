@@ -13,7 +13,6 @@ export class settingsScene extends Phaser.Scene {
         console.log(data[0]);
     }
 
-    currentOption = 0;
     options = [...GAMEVARS.defaultOptions];
     optionNames = [
         "Max Health",
@@ -36,7 +35,7 @@ export class settingsScene extends Phaser.Scene {
     // - invulnerability
 
     fireDelay = 10;
-    fireTimer = this.fireDelay;
+    fireTimer = 0;
 
     create() {
 
@@ -48,6 +47,8 @@ export class settingsScene extends Phaser.Scene {
 
         // Add title at the top of the screen
         this.add.image(this.game.renderer.width / 2, this.game.renderer.height * 0.1 + 20, 'settings').setScale(2);
+
+        this.currentOption = 0;
 
         // Spawn text for the options itself
         for(let i = 0;i<this.options.length;i++) {

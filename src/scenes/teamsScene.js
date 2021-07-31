@@ -8,20 +8,20 @@ export class teamsScene extends Phaser.Scene {
         })
     }
 
-    teamdex = [null,null,null,null];
-    teamtext = [];
-    boxes = [];
     fireDelay = 10;
-    fireTimer = this.fireDelay;
-
-    players = [];
-    level = "default";
-    options = [];
-    customSettings = false;
-    joinedPlayersNum = 0;
+    fireTimer = 0;
 
     init(data) {
-        console.log("Openend team select.");
+
+        this.teamdex = [null,null,null,null];
+        this.teamtext = [];
+        this.boxes = [];
+        this.players = [];
+        this.options = [];
+        this.level = "default";
+        this.joinedPlayersNum = 0;
+        this.customSettings = false;
+
         this.players = data[0];
         this.level = data[1];
 
