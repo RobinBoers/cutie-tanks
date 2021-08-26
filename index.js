@@ -8,8 +8,11 @@ const {app, BrowserWindow} = require('electron')
 function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 1320,
-    height: 990
+    height: 990,
+    autoHideMenuBar: true
   })
+
+  mainWindow.setMenu(null)
 
   mainWindow.loadFile('index.html')
 }
