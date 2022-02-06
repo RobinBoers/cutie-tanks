@@ -13,7 +13,6 @@ function createWindow () {
   })
 
   mainWindow.setMenu(null)
-
   mainWindow.loadFile('index.html')
 }
 

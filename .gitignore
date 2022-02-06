@@ -1,5 +1,9 @@
 /.cache
 /dist
+/electron/node_modules
+/electron/assets
+/electron/index.*
+/electron/dist
 /node_modules
 /package-lock.json
 /.DS_Store

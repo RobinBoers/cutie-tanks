@@ -1,0 +1,27 @@
+{
+  "name": "cutie-tanks-electron",
+  "version": "0.0.1",
+  "description": "Shoot 'em up arcade game.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel build ../src/index.html --dist-dir . --public-url . && cp -f ../index.js ./index.js && cp -rf ../public/assets ./assets && electron .",
+    "build": "parcel build ../src/index.html --dist-dir . --public-url . && cp -f ../index.js ./index.js && cp -rf ../public/assets ./assets && electron-packager . app --platform linux --arch x64 --out dist && electron-installer-flatpak --src dist/app-linux-x64/ --dest dist/installers/ --arch x64"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobinBoers/cutie-tanks.git"
+  },
+  "author": "Robin Boers",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/RobinBoers/cutie-tanks/issues"
+  },
+  "homepage": "https://github.com/RobinBoers/cutie-tanks#readme",
+  "dependencies": {
+    "electron": "^17.0.0"
+  },
+  "devDependencies": {
+    "electron-installer-flatpak": "^0.8.0"
+  }
+}

@@ -40,7 +40,7 @@ clones this repo and builds it using parcel
 
 AUR packages can be installed using an AUR helper like `yay` or `paru`:
 
-```
+```bash
 yay -S cutie-tanks
 ```
 
@@ -48,30 +48,30 @@ yay -S cutie-tanks
 
 1. Clone this repo
 
-```
+```bash
 git clone https://github.com/RobinBoers/cutie-tanks
 ```
 
 2. Install npm & parcel bundler
 
-```
+```bash
 sudo apt install npm
 sudo pacman -S npm
 ```
 
-```
+```bash
 npm install -g parcel-bundler
 ```
 
 3. Install dependencies
 
-```
+```bash
 npm install
 ```
 
 5. Build
 
-```
+```bash
 npm run build
 ```
 
@@ -79,7 +79,7 @@ npm run build
 
 Make sure you have parcel and nodejs installed:
 
-```
+```bash
 npm install -g parcel-bundler
 ```
 
@@ -102,19 +102,38 @@ shows the winner(s): the last one / last team standing
 
 To test the game:
 
-```
+```bash
 npm start
 ```
 
 To package for production:
 
-```
+```bash
 npm run build
 ```
 
+The game will be put in `/dist`.
+
+### Electron
+
+There is a experimental electron version available in `/electron`. It uses `electron-packager` and `electron-installer-flatpak` for building.
+
+To test, run:
+
+```bash
+cd electron && npm run dev
+```
+
+To build as a flatpak:
+
+```bash
+cd electron && npm run build
+```
+
 ## Controls
+
 The game is designed with a Xbox controller in mind, but any controller should work. To move use the left analog stick. To aim use the right analog stick. To shoot use the analog right trigger. To navigate menus dpad or left analog stick and A/B or start/select.
 
-![](artwork/controls.png)
+![controls](artwork/controls.png)
 
 NOTE: the image above says ABXY to change the level. Since a recent version that has changed and the levels are selected just like any other menu is navigated: using the dpad or left analog stick.
