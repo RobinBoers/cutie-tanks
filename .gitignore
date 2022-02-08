@@ -6,6 +6,7 @@
 /electron/dist
 /node_modules
 /package-lock.json
+/electron/package-lock.json
 /.DS_Store
 /src/old/*
 /versions/*
